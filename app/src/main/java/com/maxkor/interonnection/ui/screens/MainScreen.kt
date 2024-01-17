@@ -3,9 +3,10 @@ package com.maxkor.interonnection.ui.screens
 import android.annotation.SuppressLint
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import com.maxkor.interonnection.navigation.MyNavGraph
+import com.maxkor.interonnection.navigation.MainNavGraph
 import com.maxkor.interonnection.navigation.NavigationHelper
 import com.maxkor.interonnection.ui.screens.bar.MyBottomBar
+import com.maxkor.interonnection.ui.screens.detail.DetailScreen
 import com.maxkor.interonnection.ui.screens.favorite.FavoriteScreen
 import com.maxkor.interonnection.ui.screens.list.ListScreen
 
@@ -16,9 +17,11 @@ fun MainScreen() {
     val navHelper = NavigationHelper.rememberNavigationState()
 
     Scaffold(bottomBar = { MyBottomBar(navHelper) }) {
-        MyNavGraph(
+
+        MainNavGraph(
             navHostController = navHelper.navHostController,
-            homeScreenContent = { ListScreen() },
+            listScreenContent = { ListScreen(navHelper) },
+            detailScreenContent = { DetailScreen() },
             favoriteScreenContent = { FavoriteScreen() }
         )
     }

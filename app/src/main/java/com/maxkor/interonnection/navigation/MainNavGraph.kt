@@ -6,21 +6,22 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 
 @Composable
-fun MyNavGraph(
+fun MainNavGraph(
     navHostController: NavHostController,
-    homeScreenContent: @Composable () -> Unit,
+    listScreenContent: @Composable () -> Unit,
+    detailScreenContent: @Composable () -> Unit,
     favoriteScreenContent: @Composable () -> Unit,
 ) {
     NavHost(
         navController = navHostController,
-        startDestination = Screen.Home.route
+        startDestination = Screen.HomeGraph.route
     ) {
-        composable(Screen.Home.route) {
-            homeScreenContent()
-        }
+        nestedNavGraph(
+            listScreenContent = { listScreenContent() },
+            detailScreenContent = { detailScreenContent() }
+        )
         composable(Screen.Favorite.route) {
             favoriteScreenContent()
         }
     }
-
 }
