@@ -21,8 +21,8 @@ fun BaseScreen() {
     when (screenState.value) {
         ScreenState.ListState -> {
             ListScreen(
-                screenState = screenState,
-                dataModel = currentDataModel
+//                screenState = screenState,
+//                dataModel = currentDataModel
             )
         }
 

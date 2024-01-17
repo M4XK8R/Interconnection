@@ -26,8 +26,8 @@ import com.maxkor.interonnection.ui.screens.ScreenState
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListScreen(
-    screenState: MutableState<ScreenState>,
-    dataModel: MutableState<DataModel>
+//    screenState: MutableState<ScreenState>,
+//    dataModel: MutableState<DataModel> =
 ) {
     var testTextSearchView by remember { mutableStateOf("") }
     val testList = remember { mutableStateOf(DataModel.testList) }
@@ -58,8 +58,8 @@ fun ListScreen(
         LazyColumn() {
             items(testList.value) {
                 Row(modifier = Modifier.clickable {
-                    dataModel.value = it
-                    screenState.value = ScreenState.DetailState
+//                    dataModel.value = it
+//                    screenState.value = ScreenState.DetailState
                 }) {
                     DataCard(it)
                 }

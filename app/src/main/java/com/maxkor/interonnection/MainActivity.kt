@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.maxkor.interonnection.ui.screens.BaseScreen
+import com.maxkor.interonnection.ui.screens.MainScreen
 import com.maxkor.interonnection.ui.theme.InterСonnectionTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,7 +20,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    BaseScreen()
+                    MainScreen()
                 }
             }
         }
