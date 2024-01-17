@@ -14,9 +14,9 @@ sealed class BottomNavigationItem(
 ) {
 
     data object Home : BottomNavigationItem(
-        titleResId = R.string.list,
+        titleResId = R.string.home,
         icon = Icons.Filled.Home,
-        screen = Screen.Home
+        screen = Screen.HomeGraph
     )
 
     data object Favorite : BottomNavigationItem(

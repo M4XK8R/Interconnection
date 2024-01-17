@@ -14,6 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.maxkor.interonnection.navigation.NavigationHelper
 
@@ -28,17 +29,22 @@ fun MyBottomBar(navHelper: NavigationHelper) {
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.primary,
     ) {
-
         val navBackStackEntry by navHelper.navHostController
             .currentBackStackEntryAsState()
-        val currentRoute = navBackStackEntry?.destination?.route
+//        val currentRoute = navBackStackEntry?.destination?.route
 
         icons.forEach() { item ->
-            val route = item.screen.route
+            val currentRoute = item.screen.route
+            val isSelected = navBackStackEntry?.destination?.hierarchy?.any {
+                it.route == currentRoute
+            } ?: false
             NavigationBarItem(
-                selected = currentRoute == route,
+//                selected = currentRoute == route,
+                selected = isSelected,
                 onClick = {
-                    navHelper.navigateTo(route)
+                    if (!isSelected) {
+                        navHelper.navigateTo(currentRoute)
+                    }
                 },
 
                 icon = {

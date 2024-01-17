@@ -1,18 +1,16 @@
 package com.maxkor.interonnection.ui.screens
 
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidthIn
 import androidx.compose.foundation.layout.size
@@ -24,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,7 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextOverflow
@@ -39,7 +38,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
 import com.maxkor.interonnection.R
+import com.maxkor.interonnection.data.retrofit.DataModel
+import com.maxkor.interonnection.ui.SharedViewModel
 
 private const val MAX_MAIN_TEXT_LINES = 1
 private const val MAX_SECOND_TEXT_LINES = 2
@@ -47,11 +50,21 @@ private const val MAX_SECOND_TEXT_LINES = 2
 @Composable
 fun DataCard(
     dataModel: DataModel,
+    textFieldTextState: MutableState<String>,
+    viewModel: SharedViewModel,
     modifier: Modifier = Modifier,
 ) {
     var isFavorite by remember { mutableStateOf(dataModel.isFavorite) }
-    var extraText by remember { mutableStateOf("Add description") }
+    var extraText by remember { mutableStateOf(dataModel.extraText) }
     val modeState = remember { mutableStateOf(CardState.defaultMode) }
+
+    val changeFavState = {
+        isFavorite = !isFavorite
+        val newList = viewModel.dataLIst.value.toMutableList()
+        val index = newList.indexOf(dataModel)
+        newList[index] = dataModel.copy(isFavorite = isFavorite)
+        viewModel.updateData(newList)
+    }
 
     Card(
         modifier = Modifier
@@ -75,13 +88,13 @@ fun DataCard(
                 ,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.test),
-                    contentDescription = "test image",
+
+                AsyncImage(
+                    model = dataModel.imageUrl,
+                    contentDescription = "Actor",
                     modifier = Modifier
                         .size(64.dp)
                         .clip(RoundedCornerShape(8.dp)),
-//                contentScale = ContentScale.FillHeight
                 )
 
                 Spacer(modifier = Modifier.size(16.dp))
@@ -96,7 +109,7 @@ fun DataCard(
                     verticalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = dataModel.mainText,
+                        text = dataModel.fullName ?: "",
                         fontSize = TextUnit(18f, TextUnitType.Sp),
                         color = MaterialTheme.colorScheme.onSurface,
                         style = MaterialTheme.typography.bodyLarge,
@@ -109,31 +122,32 @@ fun DataCard(
 
                     if (isFavorite) {
                         when (modeState.value) {
+
                             CardState.ModeRead -> {
-                                Text(
-                                    text = extraText,
-                                    modifier = Modifier
-                                        .requiredWidthIn(100.dp, 150.dp)
-                                        .clickable {
+                                if (extraText.isNotEmpty()) {
+                                    FavoriteModeText(
+                                        text = extraText,
+                                        changeCardMode = {
                                             modeState.value = CardState.ModeEdit
-                                        },
-                                    fontSize = TextUnit(12f, TextUnitType.Sp),
-                                    color = MaterialTheme.colorScheme.onSurface,
-                                    style = MaterialTheme.typography.labelSmall,
-                                    fontFamily = FontFamily.Monospace,
-                                    maxLines = MAX_SECOND_TEXT_LINES,
-                                    softWrap = true,
-                                    overflow = TextOverflow.Ellipsis
-                                )
+                                        }
+                                    )
+                                } else {
+                                    FavoriteModeText(
+                                        text = "Add description",
+                                        changeCardMode = {
+                                            modeState.value = CardState.ModeEdit
+                                        }
+                                    )
+                                }
                             }
 
                             CardState.ModeEdit -> {
                                 Row {
-                                    var textFieldText by remember { mutableStateOf("") }
+//                                    var textFieldText by remember { mutableStateOf("") }
                                     TextField(
-                                        value = textFieldText,
+                                        value = textFieldTextState.value,
                                         onValueChange = {
-                                            textFieldText = it
+                                            textFieldTextState.value = it
                                             extraText = it
                                         },
                                         modifier = Modifier.width(170.dp),
@@ -153,8 +167,11 @@ fun DataCard(
 
                                     IconButton(
                                         onClick = {
+                                            val newList = viewModel.dataLIst.value.toMutableList()
+                                            val index = newList.indexOf(dataModel)
+                                            newList[index] = dataModel.copy(extraText = extraText)
+                                            viewModel.updateData(newList)
                                             modeState.value = CardState.ModeRead
-//                                            TODO()
                                         }
                                     ) {
                                         Image(
@@ -178,7 +195,7 @@ fun DataCard(
                         contentDescription = "Favorite image",
                         Modifier
                             .size(32.dp)
-                            .clickable { isFavorite = !isFavorite }
+                            .clickable { changeFavState.invoke() }
                     )
                 }
                 if (!isFavorite) {
@@ -187,14 +204,14 @@ fun DataCard(
                         contentDescription = "Favorite image",
                         Modifier
                             .size(32.dp)
-                            .clickable { isFavorite = !isFavorite }
+                            .clickable { changeFavState.invoke() }
                     )
                 }
             }
-
         }
     }
 }
+
 
 private sealed class CardState() {
     data object ModeRead : CardState()
@@ -206,7 +223,21 @@ private sealed class CardState() {
 }
 
 @Composable
-@Preview(showSystemUi = true)
-fun CardPreview() {
-//    DataCard(DataModel.testModel)
+private fun FavoriteModeText(
+    text: String,
+    changeCardMode: () -> Unit,
+) {
+    Text(
+        text = text,
+        modifier = Modifier
+            .requiredWidthIn(100.dp, 150.dp)
+            .clickable { changeCardMode() },
+        fontSize = TextUnit(12f, TextUnitType.Sp),
+        color = MaterialTheme.colorScheme.onSurface,
+        style = MaterialTheme.typography.labelSmall,
+        fontFamily = FontFamily.Monospace,
+        maxLines = MAX_SECOND_TEXT_LINES,
+        softWrap = true,
+        overflow = TextOverflow.Ellipsis
+    )
 }
