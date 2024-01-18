@@ -2,25 +2,32 @@ package com.maxkor.interonnection.ui.screens.detail
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import androidx.core.app.NotificationCompat
 import com.maxkor.interonnection.R
 
+private const val DEFAULT_CONTENT_TEXT = "Test text"
 private const val CHANNEL_ID = "channel_id"
 private const val NOTIFICATION_ID = 79416
 
 object NotificationHelper {
 
-    fun showNotification(context: Context) {
+    fun showNotification(
+        context: Context,
+        contentText: String = DEFAULT_CONTENT_TEXT,
+        contentIntent: PendingIntent? = null
+        ) {
         val notyManager = context.getSystemService(
             Service.NOTIFICATION_SERVICE
         ) as NotificationManager
 
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.iv_picked)
-            .setContentText("Test text")
+            .setContentText(contentText)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentIntent(contentIntent)
             .build()
 
         val channel = NotificationChannel(
