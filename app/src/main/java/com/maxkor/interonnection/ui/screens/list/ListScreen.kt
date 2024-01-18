@@ -1,6 +1,5 @@
 package com.maxkor.interonnection.ui.screens.list
 
-import androidx.activity.ComponentActivity
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,17 +17,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.maxkor.interonnection.createLog
-import com.maxkor.interonnection.data.retrofit.DataModel
 import com.maxkor.interonnection.navigation.NavigationHelper
 import com.maxkor.interonnection.navigation.Screen
 import com.maxkor.interonnection.ui.SharedViewModel
 import com.maxkor.interonnection.ui.screens.DataCard
-import com.maxkor.interonnection.ui.screens.DataModelTest
-import com.maxkor.interonnection.ui.screens.DataModelTest.Companion.testList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,26 +31,24 @@ fun ListScreen(
     navHelper: NavigationHelper,
 ) {
     val dataList = remember { viewModel.dataLIst }
-
-    var testTextSearchView by remember { mutableStateOf("") }
-    val testList =
-        remember { mutableStateOf(com.maxkor.interonnection.ui.screens.DataModelTest.testList) }
+    var searchedText by remember { viewModel.searchedText }
 
     val search: (String) -> Unit = { letters ->
-        val filteredList = DataModelTest.testList.filter { model ->
-            model.mainText.lowercase().startsWith(letters.lowercase())
+        viewModel.updateData(viewModel.stableList.value)
+        val filteredList = dataList.value.filter { model ->
+            model.fullName.lowercase().startsWith(letters.lowercase())
         }
-        testList.value = filteredList
+        viewModel.updateData(filteredList)
     }
 
     Column(Modifier.fillMaxSize()) {
         SearchBar(
-            query = testTextSearchView,
+            query = searchedText,
             onQueryChange = {
-                testTextSearchView = it
+                searchedText = it
                 search(it)
             },
-            onSearch = { search(testTextSearchView) },
+            onSearch = { search(searchedText) },
             active = false,
             onActiveChange = {},
             placeholder = { Text(text = "Search...") },

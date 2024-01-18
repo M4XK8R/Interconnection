@@ -41,11 +41,13 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.maxkor.interonnection.R
+import com.maxkor.interonnection.createLog
 import com.maxkor.interonnection.data.retrofit.DataModel
 import com.maxkor.interonnection.ui.SharedViewModel
 
 private const val MAX_MAIN_TEXT_LINES = 1
 private const val MAX_SECOND_TEXT_LINES = 2
+private const val EMPTY_TEXT = ""
 
 @Composable
 fun DataCard(
@@ -57,14 +59,6 @@ fun DataCard(
     var isFavorite by remember { mutableStateOf(dataModel.isFavorite) }
     var extraText by remember { mutableStateOf(dataModel.extraText) }
     val modeState = remember { mutableStateOf(CardState.defaultMode) }
-
-    val changeFavState = {
-        isFavorite = !isFavorite
-        val newList = viewModel.dataLIst.value.toMutableList()
-        val index = newList.indexOf(dataModel)
-        newList[index] = dataModel.copy(isFavorite = isFavorite)
-        viewModel.updateData(newList)
-    }
 
     Card(
         modifier = Modifier
@@ -110,19 +104,18 @@ fun DataCard(
                 ) {
                     Text(
                         text = dataModel.fullName ?: "",
+//                      modifier = Modifier.requiredWidthIn(100.dp, 150.dp),
                         fontSize = TextUnit(18f, TextUnitType.Sp),
                         color = MaterialTheme.colorScheme.onSurface,
                         style = MaterialTheme.typography.bodyLarge,
                         fontFamily = FontFamily.SansSerif,
                         maxLines = MAX_MAIN_TEXT_LINES,
-//                    modifier = Modifier.requiredWidthIn(100.dp, 150.dp),
                         softWrap = false,
                         overflow = TextOverflow.Ellipsis
                     )
 
                     if (isFavorite) {
                         when (modeState.value) {
-
                             CardState.ModeRead -> {
                                 if (extraText.isNotEmpty()) {
                                     FavoriteModeText(
@@ -195,7 +188,18 @@ fun DataCard(
                         contentDescription = "Favorite image",
                         Modifier
                             .size(32.dp)
-                            .clickable { changeFavState.invoke() }
+                            .clickable {
+                                val newList = viewModel.dataLIst.value.toMutableList()
+                                val index = newList.indexOf(dataModel)
+                                newList[index] = dataModel.copy(
+                                    extraText = EMPTY_TEXT,
+                                    isFavorite = false
+                                )
+                                viewModel.updateData(newList)
+                                extraText = EMPTY_TEXT
+                                textFieldTextState.value = EMPTY_TEXT
+                                isFavorite = false
+                            }
                     )
                 }
                 if (!isFavorite) {
@@ -204,14 +208,22 @@ fun DataCard(
                         contentDescription = "Favorite image",
                         Modifier
                             .size(32.dp)
-                            .clickable { changeFavState.invoke() }
+                            .clickable {
+                                val newList = viewModel.dataLIst.value.toMutableList()
+                                val index = newList.indexOf(dataModel)
+                                newList[index] = dataModel.copy(
+                                    extraText = extraText,
+                                    isFavorite = true
+                                )
+                                viewModel.updateData(newList)
+                                isFavorite = true
+                            }
                     )
                 }
             }
         }
     }
 }
-
 
 private sealed class CardState() {
     data object ModeRead : CardState()
