@@ -31,6 +31,7 @@ import androidx.core.net.toUri
 import coil.compose.AsyncImage
 import com.maxkor.interonnection.createLog
 import com.maxkor.interonnection.ui.SharedViewModel
+import com.maxkor.interonnection.ui.screens.detail.ImageShareHelper.shareImageFromUrl
 import kotlinx.coroutines.Dispatchers
 
 @Composable
@@ -38,6 +39,8 @@ fun DetailScreen(viewModel: SharedViewModel) {
 
     val openDialog = remember { mutableStateOf(false) }
     val element = viewModel.currentElement.value
+
+    val context = LocalContext.current
 
     if (!openDialog.value) {
         Box(
@@ -87,7 +90,6 @@ fun DetailScreen(viewModel: SharedViewModel) {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceAround
                 ) {
-                    val context = LocalContext.current
                     val coroutine = rememberCoroutineScope()
                     Button(onClick = {
                         createLog("uri = ${element.imageUrl.toUri()}")
@@ -101,7 +103,9 @@ fun DetailScreen(viewModel: SharedViewModel) {
                         Text(text = "Save ")
                     }
 
-                    Button(onClick = { /*TODO*/ }) {
+                    Button(onClick = {
+                        shareImageFromUrl(context, element.imageUrl)
+                    }) {
                         Text(text = "Share")
                     }
                 }
