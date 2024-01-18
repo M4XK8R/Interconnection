@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -30,22 +31,10 @@ import androidx.core.net.toUri
 import coil.compose.AsyncImage
 import com.maxkor.interonnection.createLog
 import com.maxkor.interonnection.ui.SharedViewModel
+import kotlinx.coroutines.Dispatchers
 
 @Composable
 fun DetailScreen(viewModel: SharedViewModel) {
-
-    fun saveImageToInternalStorage(context: Context, uri: Uri) {
-        val inputStream = context.contentResolver.openInputStream(uri)
-        val outputStream = context.openFileOutput(
-            "image.jpg",
-            Context.MODE_PRIVATE
-        )
-        inputStream?.use { input ->
-            outputStream.use { output ->
-                input.copyTo(output)
-            }
-        }
-    }
 
     val openDialog = remember { mutableStateOf(false) }
     val element = viewModel.currentElement.value
@@ -99,11 +88,14 @@ fun DetailScreen(viewModel: SharedViewModel) {
                     horizontalArrangement = Arrangement.SpaceAround
                 ) {
                     val context = LocalContext.current
+                    val coroutine = rememberCoroutineScope()
                     Button(onClick = {
                         createLog("uri = ${element.imageUrl.toUri()}")
-                        saveImageToInternalStorage(
+                        PicturesSaver.saveImageToGallery(
                             context,
-                            element.imageUrl.toUri()
+                            element.imageUrl,
+                            coroutine,
+                            "${element.fullName}.jpg"
                         )
                     }) {
                         Text(text = "Save ")
