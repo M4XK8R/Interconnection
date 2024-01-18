@@ -22,6 +22,12 @@ class SharedViewModel : ViewModel() {
         loadDataList()
     }
 
+    fun removeItem(item: DataModel) {
+        val currentList = _dataLIst.value.toMutableList()
+        currentList.remove(item)
+        _dataLIst.value = currentList
+    }
+
     fun updateData(newList: List<DataModel>) {
         _dataLIst.value = newList
     }

@@ -7,21 +7,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.maxkor.interonnection.data.retrofit.ApiFactory
 import com.maxkor.interonnection.ui.screens.MainScreen
 import com.maxkor.interonnection.ui.theme.InterСonnectionTheme
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import java.util.Calendar
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        CoroutineScope(Dispatchers.IO).launch {
-//            val list = ApiFactory.apiService.getActorsList()
-//            createLog("list = $list")
-//        }
+        val currentTime = Calendar.getInstance().timeInMillis
+        createLog("currentTime =$currentTime")
 
         setContent {
             InterСonnectionTheme {

@@ -1,5 +1,11 @@
 package com.maxkor.interonnection.ui.screens.detail
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,8 +25,12 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,13 +40,50 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityCompat.recreate
+import androidx.core.app.ActivityCompat.requestPermissions
+import com.maxkor.interonnection.createLog
+import kotlin.system.exitProcess
+
+private const val FIFTEEN_MIN_IN_MILLIS = 900_000L
+private const val ONE_HOUR_IN_MILLIS = 3_600_000L
+private const val ONE_DAY_IN_MILLIS = 86_400_000L
+private const val SEVEN_DAYS_IN_MILLIS = 604_800_000L
+
+private const val FIFTEEN_MIN = "15 min"
+private const val ONE_HOUR = "1 hour"
+private const val ONE_DAY = "1 day"
+private const val SEVEN_DAYS = "7 days"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ReminderDialog(
-    openDialog: MutableState<Boolean>
+    openDialog: MutableState<Boolean>,
+    characterName: String
 ) {
-    val radioOptions = listOf("15 min", "1 hour", "1 day", "7 days")
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { isGranted ->
+            if (isGranted) {
+//               TODO()
+            } else {
+//                TODO()
+//                exitProcess(0)
+            }
+        }
+    )
+
+    val radioOptions = listOf(
+        FIFTEEN_MIN,
+        ONE_HOUR,
+        ONE_DAY,
+        SEVEN_DAYS
+    )
+
+    val defaultTimeValue = FIFTEEN_MIN_IN_MILLIS
+    var time by remember { mutableLongStateOf(defaultTimeValue) }
+    createLog("time = $time")
 
     val (selectedOption, onOptionSelected) = remember {
         mutableStateOf(radioOptions[0])
@@ -50,7 +97,7 @@ fun ReminderDialog(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Choose the date",
+                text = "Choose time",
                 modifier = Modifier.padding(top = 16.dp),
                 fontSize = TextUnit(20f, TextUnitType.Sp),
                 color = MaterialTheme.colorScheme.onSurface,
@@ -67,7 +114,16 @@ fun ReminderDialog(
                             .height(56.dp)
                             .selectable(
                                 selected = (text == selectedOption),
-                                onClick = { onOptionSelected(text) },
+                                onClick = {
+                                    onOptionSelected(text)
+                                    when (text) {
+                                        FIFTEEN_MIN -> time = FIFTEEN_MIN_IN_MILLIS
+                                        ONE_HOUR -> time = ONE_HOUR_IN_MILLIS
+                                        ONE_DAY -> time = ONE_DAY_IN_MILLIS
+                                        SEVEN_DAYS -> time = SEVEN_DAYS_IN_MILLIS
+                                    }
+                                    createLog("time = $time")
+                                },
                                 role = Role.RadioButton
                             )
                             .padding(horizontal = 16.dp),
@@ -93,7 +149,26 @@ fun ReminderDialog(
                 val context = LocalContext.current
                 Button(
                     onClick = {
-                        NotificationHelper.showNotification(context)
+                        ActivityResultHelper.checkPermission(
+                            context = context,
+                            launcher = launcher,
+                            noPermissionCase = {
+//                                TODO()
+                            },
+                            defaultCase = {
+//                              TODO()
+                            }
+                        )
+                        val requiredTime = when (time) {
+                            FIFTEEN_MIN_IN_MILLIS -> FIFTEEN_MIN
+                            ONE_HOUR_IN_MILLIS -> ONE_HOUR
+                            ONE_DAY_IN_MILLIS -> ONE_DAY
+                            SEVEN_DAYS_IN_MILLIS -> SEVEN_DAYS
+                            else -> throw Exception("Unknown time. Smth went wrong")
+                        }
+                        val notyText = "You  will be notified about $characterName in $requiredTime"
+                        AlarmHelper.createAlarm(context, 5000L, characterName)
+                        NotificationHelper.showNotification(context, notyText)
                         openDialog.value = false
                     },
                     modifier = Modifier

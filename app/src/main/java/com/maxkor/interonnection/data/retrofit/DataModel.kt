@@ -14,7 +14,7 @@ data class DataModel(
 //    val lastName: String?,
 
     @Json(name = "fullName")
-    val fullName: String?,
+    val fullName: String,
 
     @Json(name = "imageUrl")
     val imageUrl: String,

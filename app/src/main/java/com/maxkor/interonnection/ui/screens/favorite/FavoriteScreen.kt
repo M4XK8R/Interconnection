@@ -20,17 +20,19 @@ fun FavoriteScreen(viewModel: SharedViewModel) {
 
 //    val viewModel: SharedViewModel = viewModel(LocalContext.current as ComponentActivity)
 
-    val dataList = remember { viewModel.dataLIst }
+    val dataList = remember {
+        mutableStateOf(viewModel.dataLIst.value.filter { it.isFavorite })
+    }
 
     LazyColumn() {
-        items(dataList.value) { dataModel ->
+        items(dataList.value, { it.id }) { dataModel ->
             val textFieldText = remember { mutableStateOf("") }
 
             val dismissState = rememberDismissState()
             if (dismissState.isDismissed(DismissDirection.StartToEnd) or
                 dismissState.isDismissed(DismissDirection.EndToStart)
             ) {
-//        viewModel.removeItem(item)
+                viewModel.removeItem(dataModel)
             }
             SwipeToDelete(
                 dismissState = dismissState,
