@@ -14,11 +14,15 @@ class SharedViewModel : ViewModel() {
     private val _dataLIst = mutableStateOf(emptyList<DataModel>())
     val dataLIst: State<List<DataModel>> = _dataLIst
 
+    private val _stableList = mutableStateOf(emptyList<DataModel>())
+    val stableList: State<List<DataModel>> = _stableList
+
+    val searchedText = mutableStateOf("")
+
     private val _currentElement = mutableStateOf(DataModel.initialData)
     val currentElement: State<DataModel> = _currentElement
 
     init {
-        createLog("viewmodel init")
         loadDataList()
     }
 
@@ -39,6 +43,7 @@ class SharedViewModel : ViewModel() {
     private fun loadDataList() {
         viewModelScope.launch {
             _dataLIst.value = ApiFactory.apiService.getActorsList()
+            _stableList.value = _dataLIst.value
         }
     }
 }
