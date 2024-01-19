@@ -1,10 +1,10 @@
-package com.maxkor.interonnection.ui.screens.detail.dialog
+package com.maxkor.interonnection.helpers
 
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import com.maxkor.interonnection.ui.screens.detail.NotyReceiver
+import com.maxkor.interonnection.broadcast.NotyReceiver
 import java.util.Calendar
 
 

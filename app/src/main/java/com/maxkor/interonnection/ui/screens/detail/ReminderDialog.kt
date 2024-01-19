@@ -1,4 +1,4 @@
-package com.maxkor.interonnection.ui.screens.detail.dialog
+package com.maxkor.interonnection.ui.screens.detail
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -36,6 +36,9 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import com.maxkor.interonnection.createLog
+import com.maxkor.interonnection.helpers.ActivityResultHelper
+import com.maxkor.interonnection.helpers.AlarmHelper
+import com.maxkor.interonnection.helpers.NotificationHelper
 
 private const val FIFTEEN_MIN_IN_MILLIS = 900_000L
 private const val ONE_HOUR_IN_MILLIS = 3_600_000L
@@ -49,9 +52,9 @@ private const val SEVEN_DAYS = "7 days"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ReminderDialog(
+fun ReminderDialog (
     openDialog: MutableState<Boolean>,
-    characterName: String
+    characterName: String,
 ) {
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),

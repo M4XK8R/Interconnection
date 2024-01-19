@@ -28,9 +28,9 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import coil.compose.AsyncImage
 import com.maxkor.interonnection.createLog
+import com.maxkor.interonnection.helpers.ImageShareHelper.shareImageFromUrl
+import com.maxkor.interonnection.helpers.PicturesSaver
 import com.maxkor.interonnection.ui.SharedViewModel
-import com.maxkor.interonnection.ui.screens.detail.ImageShareHelper.shareImageFromUrl
-import com.maxkor.interonnection.ui.screens.detail.dialog.ReminderDialog
 
 @Composable
 fun DetailScreen(viewModel: SharedViewModel) {
@@ -90,11 +90,9 @@ fun DetailScreen(viewModel: SharedViewModel) {
                 ) {
                     val coroutine = rememberCoroutineScope()
                     Button(onClick = {
-                        createLog("uri = ${element.imageUrl.toUri()}")
-                        PicturesSaver.saveImageToGallery(
+                        PicturesSaver.saveImageByDownLoadManager(
                             context,
                             element.imageUrl,
-                            coroutine,
                             "${element.fullName}.jpg"
                         )
                     }) {

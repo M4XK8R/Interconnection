@@ -14,6 +14,7 @@ import com.maxkor.interonnection.ui.screens.bar.MyBottomBar
 import com.maxkor.interonnection.ui.screens.detail.DetailScreen
 import com.maxkor.interonnection.ui.screens.favorite.FavoriteScreen
 import com.maxkor.interonnection.ui.screens.list.ListScreen
+import javax.inject.Inject
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable

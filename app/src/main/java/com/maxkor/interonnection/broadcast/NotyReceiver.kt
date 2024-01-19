@@ -1,4 +1,4 @@
-package com.maxkor.interonnection.ui.screens.detail
+package com.maxkor.interonnection.broadcast
 
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
@@ -6,8 +6,8 @@ import android.content.Context
 import android.content.Intent
 import com.maxkor.interonnection.MainActivity
 import com.maxkor.interonnection.createLog
-import com.maxkor.interonnection.ui.screens.detail.dialog.AlarmHelper
-import com.maxkor.interonnection.ui.screens.detail.dialog.NotificationHelper
+import com.maxkor.interonnection.helpers.AlarmHelper
+import com.maxkor.interonnection.helpers.NotificationHelper
 
 private const val CONTENT_TEXT_DEFAULT = "Unknown"
 
