@@ -1,29 +1,23 @@
 package com.maxkor.interonnection.ui
 
-import android.app.Application
-import android.content.Context
-import android.content.ServiceConnection
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.maxkor.interonnection.App
 import com.maxkor.interonnection.createLog
 import com.maxkor.interonnection.domain.DataModel
 import com.maxkor.interonnection.domain.MainRepository
-import com.maxkor.interonnection.ui.screens.InternetChecker
+import com.maxkor.interonnection.helpers.InternetChecker
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SharedViewModel @Inject constructor(
-    application: Application,
-    private val repository: MainRepository
-) : AndroidViewModel(application) {
+    private val repository: MainRepository,
+    private val internetChecker: InternetChecker
+) : ViewModel() {
 
     private val _dataLIst = mutableStateOf(emptyList<DataModel>())
     val dataLIst: State<List<DataModel>> = _dataLIst
@@ -37,7 +31,7 @@ class SharedViewModel @Inject constructor(
     val currentElement: State<DataModel> = _currentElement
 
     init {
-        val hasInternetConnection = InternetChecker.isNetworkAvailable(application)
+        val hasInternetConnection = internetChecker.isNetworkAvailable()
         createLog("hasInternetConnection = $hasInternetConnection")
         loadDataList(hasInternetConnection)
     }
