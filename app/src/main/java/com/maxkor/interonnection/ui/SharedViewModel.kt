@@ -1,19 +1,29 @@
 package com.maxkor.interonnection.ui
 
+import android.app.Application
+import android.content.Context
+import android.content.ServiceConnection
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.maxkor.interonnection.App
+import com.maxkor.interonnection.createLog
 import com.maxkor.interonnection.domain.DataModel
 import com.maxkor.interonnection.domain.MainRepository
+import com.maxkor.interonnection.ui.screens.InternetChecker
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SharedViewModel @Inject constructor(
+    application: Application,
     private val repository: MainRepository
-) : ViewModel() {
+) : AndroidViewModel(application) {
 
     private val _dataLIst = mutableStateOf(emptyList<DataModel>())
     val dataLIst: State<List<DataModel>> = _dataLIst
@@ -27,7 +37,17 @@ class SharedViewModel @Inject constructor(
     val currentElement: State<DataModel> = _currentElement
 
     init {
-        loadDataList()
+        val hasInternetConnection = InternetChecker.isNetworkAvailable(application)
+        createLog("hasInternetConnection = $hasInternetConnection")
+        loadDataList(hasInternetConnection)
+    }
+
+    override fun onCleared() {
+        // start service? TODO()
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.saveToInternalDb(_dataLIst.value)
+        }
+        super.onCleared()
     }
 
     fun removeItem(item: DataModel) {
@@ -44,9 +64,9 @@ class SharedViewModel @Inject constructor(
         _currentElement.value = dataModel
     }
 
-    private fun loadDataList() {
+    private fun loadDataList(hasInternetConnection: Boolean) {
         viewModelScope.launch {
-            _dataLIst.value = repository.getData(false)
+            _dataLIst.value = repository.getData(hasInternetConnection)
             _stableList.value = _dataLIst.value
         }
     }

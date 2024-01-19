@@ -1,6 +1,6 @@
 package com.maxkor.interonnection.di
 
-import com.maxkor.interonnection.data.db.MainRepositoryImpl
+import com.maxkor.interonnection.data.MainRepositoryImpl
 import com.maxkor.interonnection.domain.MainRepository
 import dagger.Binds
 import dagger.Module
