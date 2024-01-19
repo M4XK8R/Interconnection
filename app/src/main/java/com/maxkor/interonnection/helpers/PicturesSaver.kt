@@ -61,7 +61,7 @@ object PicturesSaver {
         }
     }
 
-    fun saveImageByDownLoadManager(
+    fun saveImageToDownloadsFolder(
         context: Context,
         imageUrl: String,
         fileName: String,
@@ -80,6 +80,36 @@ object PicturesSaver {
         } catch (e: Exception) {
             Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
             e.printStackTrace()
+        }
+    }
+
+    /*
+This method can be used to download an image from the internet using a url in Android. This use Android Download Manager to
+download the file and added it to the Gallery. Downloaded image will be saved to "Pictures"
+Folder in your internal storage
+*/
+    fun saveImageToPicturesFolder(
+        context: Context,
+        downloadUrlOfImage: String,
+        filename: String
+    ) {
+        try {
+            val dm = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager?
+            val downloadUri = Uri.parse(downloadUrlOfImage)
+            val request = DownloadManager.Request(downloadUri)
+            request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
+                .setAllowedOverRoaming(false)
+                .setTitle(filename)
+                .setMimeType("image/jpeg") // Your file type. You can use this code to download other file types also.
+                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                .setDestinationInExternalPublicDir(
+                    Environment.DIRECTORY_PICTURES,
+                    File.separator + filename + ".jpg"
+                )
+            dm!!.enqueue(request)
+            Toast.makeText(context, "Image download started.", Toast.LENGTH_SHORT).show()
+        } catch (e: java.lang.Exception) {
+            Toast.makeText(context, "Image download failed.", Toast.LENGTH_SHORT).show()
         }
     }
 }
