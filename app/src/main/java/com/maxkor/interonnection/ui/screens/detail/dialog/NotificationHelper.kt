@@ -1,4 +1,4 @@
-package com.maxkor.interonnection.ui.screens.detail
+package com.maxkor.interonnection.ui.screens.detail.dialog
 
 import android.app.NotificationChannel
 import android.app.NotificationManager

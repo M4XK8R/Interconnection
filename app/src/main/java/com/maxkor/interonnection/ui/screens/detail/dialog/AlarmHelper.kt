@@ -1,9 +1,10 @@
-package com.maxkor.interonnection.ui.screens.detail
+package com.maxkor.interonnection.ui.screens.detail.dialog
 
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import com.maxkor.interonnection.ui.screens.detail.NotyReceiver
 import java.util.Calendar
 
 

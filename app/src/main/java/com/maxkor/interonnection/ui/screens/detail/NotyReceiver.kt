@@ -6,6 +6,8 @@ import android.content.Context
 import android.content.Intent
 import com.maxkor.interonnection.MainActivity
 import com.maxkor.interonnection.createLog
+import com.maxkor.interonnection.ui.screens.detail.dialog.AlarmHelper
+import com.maxkor.interonnection.ui.screens.detail.dialog.NotificationHelper
 
 private const val CONTENT_TEXT_DEFAULT = "Unknown"
 

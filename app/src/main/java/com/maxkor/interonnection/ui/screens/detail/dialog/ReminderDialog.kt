@@ -1,9 +1,5 @@
-package com.maxkor.interonnection.ui.screens.detail
+package com.maxkor.interonnection.ui.screens.detail.dialog
 
-import android.app.AlarmManager
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -26,7 +22,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,11 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
-import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityCompat.recreate
-import androidx.core.app.ActivityCompat.requestPermissions
 import com.maxkor.interonnection.createLog
-import kotlin.system.exitProcess
 
 private const val FIFTEEN_MIN_IN_MILLIS = 900_000L
 private const val ONE_HOUR_IN_MILLIS = 3_600_000L
