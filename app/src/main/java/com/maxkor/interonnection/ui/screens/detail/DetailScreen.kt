@@ -1,7 +1,5 @@
 package com.maxkor.interonnection.ui.screens.detail
 
-import android.content.Context
-import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,7 +30,7 @@ import coil.compose.AsyncImage
 import com.maxkor.interonnection.createLog
 import com.maxkor.interonnection.ui.SharedViewModel
 import com.maxkor.interonnection.ui.screens.detail.ImageShareHelper.shareImageFromUrl
-import kotlinx.coroutines.Dispatchers
+import com.maxkor.interonnection.ui.screens.detail.dialog.ReminderDialog
 
 @Composable
 fun DetailScreen(viewModel: SharedViewModel) {

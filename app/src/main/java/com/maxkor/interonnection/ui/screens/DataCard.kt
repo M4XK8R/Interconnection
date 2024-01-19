@@ -1,6 +1,5 @@
 package com.maxkor.interonnection.ui.screens
 
-import androidx.activity.ComponentActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -30,19 +29,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.maxkor.interonnection.R
-import com.maxkor.interonnection.createLog
-import com.maxkor.interonnection.data.retrofit.DataModel
+import com.maxkor.interonnection.data.retrofit.DataModelDto
 import com.maxkor.interonnection.ui.SharedViewModel
 
 private const val MAX_MAIN_TEXT_LINES = 1
@@ -51,7 +46,7 @@ private const val EMPTY_TEXT = ""
 
 @Composable
 fun DataCard(
-    dataModel: DataModel,
+    dataModel: DataModelDto,
     textFieldTextState: MutableState<String>,
     viewModel: SharedViewModel,
     modifier: Modifier = Modifier,

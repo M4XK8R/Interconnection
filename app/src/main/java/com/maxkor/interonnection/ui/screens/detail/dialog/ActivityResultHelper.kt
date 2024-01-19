@@ -1,4 +1,4 @@
-package com.maxkor.interonnection.ui.screens.detail
+package com.maxkor.interonnection.ui.screens.detail.dialog
 
 import android.Manifest
 import android.content.Context
