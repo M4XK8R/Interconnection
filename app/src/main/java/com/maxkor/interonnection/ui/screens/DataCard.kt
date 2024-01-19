@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.maxkor.interonnection.R
 import com.maxkor.interonnection.data.retrofit.DataModelDto
+import com.maxkor.interonnection.domain.DataModel
 import com.maxkor.interonnection.ui.SharedViewModel
 
 private const val MAX_MAIN_TEXT_LINES = 1
@@ -46,7 +47,7 @@ private const val EMPTY_TEXT = ""
 
 @Composable
 fun DataCard(
-    dataModel: DataModelDto,
+    dataModel: DataModel,
     textFieldTextState: MutableState<String>,
     viewModel: SharedViewModel,
     modifier: Modifier = Modifier,

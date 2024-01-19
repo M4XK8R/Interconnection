@@ -4,8 +4,9 @@ import com.maxkor.interonnection.data.PojoMapper
 import com.maxkor.interonnection.data.retrofit.ApiService
 import com.maxkor.interonnection.domain.DataModel
 import com.maxkor.interonnection.domain.MainRepository
+import javax.inject.Inject
 
-class MainRepositoryImpl(
+class MainRepositoryImpl @Inject constructor(
     private val db: InternalDataBase,
     private val api: ApiService
 ) : MainRepository {

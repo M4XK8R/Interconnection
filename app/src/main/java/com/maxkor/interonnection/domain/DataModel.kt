@@ -6,4 +6,8 @@ data class DataModel(
     val imageUrl: String,
     var extraText: String,
     var isFavorite: Boolean
-)
+) {
+    companion object {
+        val initial = DataModel(0, "", "", "", false)
+    }
+}

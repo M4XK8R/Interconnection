@@ -8,5 +8,4 @@ interface ApiService {
 
     @GET(END_POINT_URL)
     suspend fun getDataList(): List<DataModelDto>
-
 }
