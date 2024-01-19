@@ -18,7 +18,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.maxkor.interonnection.createLog
 import com.maxkor.interonnection.navigation.NavigationHelper
 import com.maxkor.interonnection.navigation.Screen
 import com.maxkor.interonnection.ui.SharedViewModel
@@ -33,12 +32,20 @@ fun ListScreen(
     val dataList = remember { viewModel.dataLIst }
     var searchedText by remember { viewModel.searchedText }
 
+//    val search: (String) -> Unit = { letters ->
+//        viewModel.updateData(viewModel.stableList.value)
+//        val filteredList = dataList.value.filter { model ->
+//            model.fullName.lowercase().startsWith(letters.lowercase())
+//        }
+//        viewModel.updateData(filteredList)
+//    }
+
     val search: (String) -> Unit = { letters ->
-        viewModel.updateData(viewModel.stableList.value)
+        viewModel.saveData(viewModel.stableList.value)
         val filteredList = dataList.value.filter { model ->
             model.fullName.lowercase().startsWith(letters.lowercase())
         }
-        viewModel.updateData(filteredList)
+        viewModel.saveData(filteredList)
     }
 
     Column(Modifier.fillMaxSize()) {

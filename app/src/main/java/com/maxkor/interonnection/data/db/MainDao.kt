@@ -12,10 +12,6 @@ interface MainDao {
     @Query("SELECT * FROM main_data_table")
     suspend fun getAll(): List<DataEntity>
 
-    @Delete
-    suspend fun deleteElement(dataEntity: DataEntity)
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAllData(dataList: List<DataEntity>)
-
 }

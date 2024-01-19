@@ -90,7 +90,7 @@ fun DetailScreen(viewModel: SharedViewModel) {
                 ) {
                     val coroutine = rememberCoroutineScope()
                     Button(onClick = {
-                        PicturesSaver.saveImageByDownLoadManager(
+                        PicturesSaver.saveImageToPicturesFolder(
                             context,
                             element.imageUrl,
                             "${element.fullName}.jpg"
