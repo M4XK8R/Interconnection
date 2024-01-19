@@ -1,6 +1,7 @@
-package com.maxkor.interonnection.data.db
+package com.maxkor.interonnection.data
 
-import com.maxkor.interonnection.data.PojoMapper
+import com.maxkor.interonnection.createLog
+import com.maxkor.interonnection.data.db.InternalDataBase
 import com.maxkor.interonnection.data.retrofit.ApiService
 import com.maxkor.interonnection.domain.DataModel
 import com.maxkor.interonnection.domain.MainRepository
@@ -11,15 +12,18 @@ class MainRepositoryImpl @Inject constructor(
     private val api: ApiService
 ) : MainRepository {
 
-    override suspend fun getData(offlineMode: Boolean): List<DataModel> {
+    override suspend fun getData(hasInternetConnection: Boolean): List<DataModel> {
+        createLog("getData")
         val dataList = mutableListOf<DataModel>()
-        if (offlineMode) {
-            db.getMainDao().getAll().forEach { entity ->
-                dataList.add(PojoMapper.entityToModel(entity))
-            }
-        } else {
+        if (hasInternetConnection) {
+            createLog("onlineMode")
             api.getDataList().forEach { dto ->
                 dataList.add(PojoMapper.dtoToModel(dto))
+            }
+        } else {
+            createLog("offlineMode")
+            db.getMainDao().getAll().forEach { entity ->
+                dataList.add(PojoMapper.entityToModel(entity))
             }
         }
         return dataList.toList()

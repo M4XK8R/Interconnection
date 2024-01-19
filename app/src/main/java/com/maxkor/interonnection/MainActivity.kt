@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import com.maxkor.interonnection.ui.screens.InternetChecker
 import com.maxkor.interonnection.ui.screens.MainScreen
 import com.maxkor.interonnection.ui.theme.InterСonnectionTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -15,6 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val l = InternetChecker.isNetworkAvailable(this)
         setContent {
             InterСonnectionTheme {
                 Surface(
