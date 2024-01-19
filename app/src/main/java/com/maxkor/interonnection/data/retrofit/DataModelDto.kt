@@ -16,8 +16,6 @@ data class DataModelDto(
     var extraText: String = "",
 
     var isFavorite: Boolean = false
-) {
-    companion object {
-        val initialData = DataModelDto(0, "", "")
-    }
-}
+)
+
+

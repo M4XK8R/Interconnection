@@ -7,6 +7,5 @@ private const val END_POINT_URL = "/api/v2/Characters"
 interface ApiService {
 
     @GET(END_POINT_URL)
-    suspend fun getActorsList(): List<DataModelDto>
-
+    suspend fun getDataList(): List<DataModelDto>
 }

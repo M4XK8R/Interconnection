@@ -9,15 +9,12 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.maxkor.interonnection.ui.screens.MainScreen
 import com.maxkor.interonnection.ui.theme.InterСonnectionTheme
-import java.util.Calendar
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val currentTime = Calendar.getInstance().timeInMillis
-        createLog("currentTime =$currentTime")
-
         setContent {
             InterСonnectionTheme {
                 Surface(

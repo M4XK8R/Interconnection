@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.maxkor.interonnection.navigation.MainNavGraph
 import com.maxkor.interonnection.navigation.NavigationHelper
@@ -18,7 +19,8 @@ import com.maxkor.interonnection.ui.screens.list.ListScreen
 @Composable
 fun MainScreen() {
 
-    val viewModel: SharedViewModel = viewModel(LocalContext.current as ComponentActivity)
+//    val viewModel: SharedViewModel = viewModel(LocalContext.current as ComponentActivity)
+    val viewModel: SharedViewModel = hiltViewModel()
 
     val navHelper = NavigationHelper.rememberNavigationState()
 
