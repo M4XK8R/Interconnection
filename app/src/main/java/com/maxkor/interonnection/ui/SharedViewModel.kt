@@ -41,7 +41,7 @@ class SharedViewModel : ViewModel() {
 
     private fun loadDataList() {
         viewModelScope.launch {
-            _dataLIst.value = ApiFactory.apiService.getActorsList()
+            _dataLIst.value = ApiFactory.apiService.getDataList()
             _stableList.value = _dataLIst.value
         }
     }
