@@ -1,5 +1,6 @@
 package com.maxkor.interonnection.ui
 
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -16,8 +17,10 @@ import javax.inject.Inject
 @HiltViewModel
 class SharedViewModel @Inject constructor(
     private val repository: MainRepository,
-    private val internetChecker: InternetChecker
+    internetChecker: InternetChecker
 ) : ViewModel() {
+
+    val snackbarHostState = SnackbarHostState()
 
     private val _dataLIst = mutableStateOf(emptyList<DataModel>())
     val dataLIst: State<List<DataModel>> = _dataLIst
@@ -32,35 +35,45 @@ class SharedViewModel @Inject constructor(
 
     init {
         val hasInternetConnection = internetChecker.isNetworkAvailable()
+        if (!hasInternetConnection) {
+            viewModelScope.launch {
+                snackbarHostState.showSnackbar("NO INTERNET CONNECTION")
+            }
+        } else {
+            viewModelScope.launch {
+                snackbarHostState.showSnackbar("INTERNET CONNECTION")
+            }
+        }
         createLog("hasInternetConnection = $hasInternetConnection")
         loadDataList(hasInternetConnection)
     }
 
-    override fun onCleared() {
-        // start service? TODO()
+    fun saveData(dataList: List<DataModel>) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.saveToInternalDb(_dataLIst.value)
+            repository.saveData(dataList)
         }
-        super.onCleared()
+        updateData(dataList)
     }
 
     fun removeItem(item: DataModel) {
         val currentList = _dataLIst.value.toMutableList()
         currentList.remove(item)
-        _dataLIst.value = currentList
-    }
-
-    fun updateData(newList: List<DataModel>) {
-        _dataLIst.value = newList
+        saveData(currentList)
+        updateData(currentList)
     }
 
     fun passCurrentElement(dataModel: DataModel) {
         _currentElement.value = dataModel
     }
 
+    private fun updateData(newList: List<DataModel>) {
+        _dataLIst.value = newList
+    }
+
     private fun loadDataList(hasInternetConnection: Boolean) {
         viewModelScope.launch {
             _dataLIst.value = repository.getData(hasInternetConnection)
+            repository.saveData(_dataLIst.value)
             _stableList.value = _dataLIst.value
         }
     }

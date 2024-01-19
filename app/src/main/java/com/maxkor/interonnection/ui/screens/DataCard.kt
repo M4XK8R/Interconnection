@@ -37,7 +37,6 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.maxkor.interonnection.R
-import com.maxkor.interonnection.data.retrofit.DataModelDto
 import com.maxkor.interonnection.domain.DataModel
 import com.maxkor.interonnection.ui.SharedViewModel
 
@@ -99,7 +98,7 @@ fun DataCard(
                     verticalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = dataModel.fullName ?: "",
+                        text = dataModel.fullName,
 //                      modifier = Modifier.requiredWidthIn(100.dp, 150.dp),
                         fontSize = TextUnit(18f, TextUnitType.Sp),
                         color = MaterialTheme.colorScheme.onSurface,
@@ -159,7 +158,7 @@ fun DataCard(
                                             val newList = viewModel.dataLIst.value.toMutableList()
                                             val index = newList.indexOf(dataModel)
                                             newList[index] = dataModel.copy(extraText = extraText)
-                                            viewModel.updateData(newList)
+                                            viewModel.saveData(newList)
                                             modeState.value = CardState.ModeRead
                                         }
                                     ) {
@@ -191,7 +190,7 @@ fun DataCard(
                                     extraText = EMPTY_TEXT,
                                     isFavorite = false
                                 )
-                                viewModel.updateData(newList)
+                                viewModel.saveData(newList)
                                 extraText = EMPTY_TEXT
                                 textFieldTextState.value = EMPTY_TEXT
                                 isFavorite = false
@@ -211,7 +210,7 @@ fun DataCard(
                                     extraText = extraText,
                                     isFavorite = true
                                 )
-                                viewModel.updateData(newList)
+                                viewModel.saveData(newList)
                                 isFavorite = true
                             }
                     )

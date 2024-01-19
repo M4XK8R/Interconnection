@@ -2,7 +2,10 @@ package com.maxkor.interonnection.ui.screens
 
 import android.annotation.SuppressLint
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.maxkor.interonnection.navigation.MainNavGraph
 import com.maxkor.interonnection.navigation.NavigationHelper
@@ -20,9 +23,11 @@ fun MainScreen() {
 
     val navHelper = NavigationHelper.rememberNavigationState()
 
+    val snackbarHostState = remember { viewModel.snackbarHostState }
+
     Scaffold(
         bottomBar = { MyBottomBar(navHelper) },
-        snackbarHost = {}
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) {
         MainNavGraph(
             navHostController = navHelper.navHostController,

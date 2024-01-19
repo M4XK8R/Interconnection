@@ -1,10 +1,11 @@
-package com.maxkor.interonnection.data
+package com.maxkor.interonnection.data.mappers
 
 import com.maxkor.interonnection.data.db.DataEntity
 import com.maxkor.interonnection.data.retrofit.DataModelDto
 import com.maxkor.interonnection.domain.DataModel
+import javax.inject.Inject
 
-object PojoMapper {
+class PojoMapper @Inject constructor() {
 
     fun entityToModel(entity: DataEntity): DataModel {
         return DataModel(

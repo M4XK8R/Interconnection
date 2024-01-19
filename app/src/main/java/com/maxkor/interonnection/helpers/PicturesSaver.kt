@@ -13,7 +13,6 @@ import java.io.File
 import java.io.FileOutputStream
 import java.net.URL
 
-
 object PicturesSaver {
 
     // Does not work properly
