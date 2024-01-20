@@ -32,7 +32,9 @@ fun MainScreen() {
         MainNavGraph(
             navHostController = navHelper.navHostController,
             listScreenContent = { ListScreen(viewModel, navHelper) },
-            detailScreenContent = { DetailScreen(viewModel) },
+            detailScreenContent = { dataModelId ->
+                DetailScreen(dataModelId)
+            },
             favoriteScreenContent = { FavoriteScreen(viewModel) }
         )
     }

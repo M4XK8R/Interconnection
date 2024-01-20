@@ -20,6 +20,16 @@ class NavigationHelper(
         }
     }
 
+    fun navigateToDetail(dataModelId: String) {
+        navHostController.navigate(Screen.Detail.getRouteWithArgs(dataModelId)) {
+//            popUpTo(navHostController.graph.findStartDestination().id) {
+//                saveState = true
+//            }
+//            launchSingleTop = true
+//            restoreState = true
+        }
+    }
+
     companion object {
         @Composable
         fun rememberNavigationState(

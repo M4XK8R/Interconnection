@@ -6,6 +6,7 @@ import androidx.compose.material3.DismissDirection
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberDismissState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import com.maxkor.interonnection.ui.SharedViewModel
@@ -15,7 +16,8 @@ import com.maxkor.interonnection.ui.screens.DataCard
 @Composable
 fun FavoriteScreen(viewModel: SharedViewModel) {
 
-    val dataList = remember { viewModel.dataLIst }
+//    val dataList = remember { viewModel.dataLIst }
+    val dataList = viewModel.dataListReactive.collectAsState(initial = emptyList())
 
     LazyColumn() {
         items(dataList.value.filter { it.isFavorite }, { it.id }) { dataModel ->
@@ -25,14 +27,14 @@ fun FavoriteScreen(viewModel: SharedViewModel) {
             if (dismissState.isDismissed(DismissDirection.StartToEnd) or
                 dismissState.isDismissed(DismissDirection.EndToStart)
             ) {
-                viewModel.removeItem(dataModel)
+                viewModel.removeFromFavorites(dataModel)
             }
             SwipeToDelete(
                 dismissState = dismissState,
                 dismissContent = {
                     DataCard(
                         dataModel = dataModel,
-                        textFieldTextState = textFieldText,
+//                        textFieldTextState = textFieldText,
                         viewModel = viewModel
                     )
                 }
