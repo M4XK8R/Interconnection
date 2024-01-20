@@ -22,7 +22,8 @@ class SharedViewModel @Inject constructor(
 
     val snackbarHostState = SnackbarHostState()
 
-//    private val _dataLIst = mutableStateOf(emptyList<DataModel>())
+     val dataListReactive = repository.getDataReactive()
+
     private val _dataLIst = mutableStateOf(emptyList<DataModel>())
     val dataLIst: State<List<DataModel>> = _dataLIst
 

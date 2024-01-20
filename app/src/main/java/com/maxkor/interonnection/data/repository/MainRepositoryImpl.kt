@@ -7,6 +7,15 @@ import com.maxkor.interonnection.data.db.InternalDataBase
 import com.maxkor.interonnection.data.retrofit.ApiService
 import com.maxkor.interonnection.domain.DataModel
 import com.maxkor.interonnection.domain.MainRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.shareIn
 import javax.inject.Inject
 
 class MainRepositoryImpl @Inject constructor(
@@ -27,7 +36,6 @@ class MainRepositoryImpl @Inject constructor(
     }
 
     private suspend fun loadDataFromServerToDb() {
-        createLog("loadDataFromServerToDb")
         try {
             val newData = mutableListOf<DataEntity>()
             val response = api.getResponse()
@@ -67,6 +75,15 @@ class MainRepositoryImpl @Inject constructor(
 
     override suspend fun getErrors() {
 //TODO
+    }
+
+    override fun getDataReactive(): Flow<List<DataModel>> {
+        createLog("MainRepositoryImpl getDataReactive")
+        return db.getMainDao().getDataReactive().map { entityList ->
+            entityList.map { entityModel ->
+                mapper.entityToModel(entityModel)
+            }
+        }
     }
 
 }
