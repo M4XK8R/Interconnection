@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import com.maxkor.interonnection.service.LoadDataService
 import com.maxkor.interonnection.ui.screens.MainScreen
 import com.maxkor.interonnection.ui.theme.InterСonnectionTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,5 +27,20 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    override fun onResume() {
+        createLog("onResume")
+        super.onResume()
+        startService(LoadDataService.newIntent(this))
+        createLog("startService")
+    }
+
+    override fun onPause() {
+        createLog("onPause")
+        super.onPause()
+        stopService(LoadDataService.newIntent(this))
+        createLog("stopService")
+    }
+
 }
 

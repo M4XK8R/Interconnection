@@ -4,15 +4,14 @@ import kotlinx.coroutines.flow.Flow
 
 interface MainRepository {
 
+    fun getDataReactive(): Flow<List<DataModel>>
+
     suspend fun insertToDb(dataModel: DataModel)
 
-    suspend fun getData(hasInternetConnection: Boolean): List<DataModel>
+    suspend fun loadDataFromServerToDb(hasInternetConnection: Boolean)
 
-    suspend fun getElement(modelId: Int) : DataModel
-
-    suspend fun saveData(dataList: List<DataModel>)
+    suspend fun getElement(modelId: Int): DataModel
 
     suspend fun getErrors()
 
-    fun getDataReactive(): Flow<List<DataModel>>
 }
