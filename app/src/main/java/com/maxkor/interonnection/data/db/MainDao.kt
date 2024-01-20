@@ -15,6 +15,9 @@ interface MainDao {
     @Query("SELECT * FROM main_data_table")
     suspend fun getAll(): List<DataEntity>
 
+    @Query("SELECT * FROM main_data_table where id= :modelId")
+    suspend fun getElement(modelId: Int) : DataEntity
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAllData(dataList: List<DataEntity>)
 

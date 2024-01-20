@@ -7,22 +7,18 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberDismissState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import com.maxkor.interonnection.ui.SharedViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.maxkor.interonnection.ui.screens.DataCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FavoriteScreen(viewModel: SharedViewModel) {
-
-//    val dataList = remember { viewModel.dataLIst }
+fun FavoriteScreen(
+    viewModel: FavoritesViewModel = hiltViewModel()
+) {
     val dataList = viewModel.dataListReactive.collectAsState(initial = emptyList())
 
     LazyColumn() {
         items(dataList.value.filter { it.isFavorite }, { it.id }) { dataModel ->
-            val textFieldText = remember { mutableStateOf("") }
-
             val dismissState = rememberDismissState()
             if (dismissState.isDismissed(DismissDirection.StartToEnd) or
                 dismissState.isDismissed(DismissDirection.EndToStart)
@@ -34,8 +30,11 @@ fun FavoriteScreen(viewModel: SharedViewModel) {
                 dismissContent = {
                     DataCard(
                         dataModel = dataModel,
-//                        textFieldTextState = textFieldText,
-                        viewModel = viewModel
+                        addToFavorites = { viewModel.addToFavorites(it) },
+                        removeFromFavorites = { viewModel.removeFromFavorites(it) },
+                        addDescription = { dataModel, text ->
+                            viewModel.addDescription(dataModel, text)
+                        }
                     )
                 }
             )

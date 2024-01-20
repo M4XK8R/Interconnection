@@ -9,7 +9,7 @@ import androidx.navigation.compose.composable
 fun MainNavGraph(
     navHostController: NavHostController,
     listScreenContent: @Composable () -> Unit,
-    detailScreenContent: @Composable () -> Unit,
+    detailScreenContent: @Composable (String) -> Unit,
     favoriteScreenContent: @Composable () -> Unit,
 ) {
     NavHost(
@@ -17,8 +17,8 @@ fun MainNavGraph(
         startDestination = Screen.HomeGraph.route
     ) {
         nestedNavGraph(
-            listScreenContent = { listScreenContent() },
-            detailScreenContent = { detailScreenContent() }
+            listScreenContent =  listScreenContent,
+            detailScreenContent = detailScreenContent
         )
         composable(Screen.Favorite.route) {
             favoriteScreenContent()

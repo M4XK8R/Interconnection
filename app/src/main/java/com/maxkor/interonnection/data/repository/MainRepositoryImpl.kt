@@ -39,6 +39,10 @@ class MainRepositoryImpl @Inject constructor(
         return dataList.toList()
     }
 
+    override suspend fun getElement(modelId: Int): DataModel {
+        return mapper.entityToModel(db.getMainDao().getElement(modelId))
+    }
+
     private suspend fun loadDataFromServerToDb() {
         try {
             val newData = mutableListOf<DataEntity>()
@@ -78,7 +82,7 @@ class MainRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getErrors() {
-      //TODO
+        //TODO
     }
 
     override fun getDataReactive(): Flow<List<DataModel>> {

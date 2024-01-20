@@ -4,10 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.maxkor.interonnection.createLog
 
 fun NavGraphBuilder.nestedNavGraph(
     listScreenContent: @Composable () -> Unit,
-    detailScreenContent: @Composable () -> Unit,
+    detailScreenContent: @Composable (String) -> Unit,
 ) {
     navigation(
         startDestination = Screen.List.route,
@@ -17,7 +18,12 @@ fun NavGraphBuilder.nestedNavGraph(
             listScreenContent()
         }
         composable(Screen.Detail.route) {
-            detailScreenContent()
+            val dataModelId = it.arguments?.getString(Screen.Detail.ARG_ID_KEY)
+                ?: throw Exception(
+                    "Navigation to detail screen failed dataModelId = null"
+                )
+            createLog("dataModelId = $dataModelId")
+            detailScreenContent(dataModelId)
         }
     }
 }
