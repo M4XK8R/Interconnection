@@ -1,9 +1,10 @@
 package com.maxkor.interonnection.domain
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.SharedFlow
 
 interface MainRepository {
+
+    suspend fun insertToDb(dataModel: DataModel)
 
     suspend fun getData(hasInternetConnection: Boolean): List<DataModel>
 

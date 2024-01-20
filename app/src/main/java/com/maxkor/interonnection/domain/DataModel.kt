@@ -9,5 +9,7 @@ data class DataModel(
 ) {
     companion object {
         val initial = DataModel(0, "", "", "", false)
+
+        const val DEFAULT_EXTRA_TEXT = ""
     }
 }

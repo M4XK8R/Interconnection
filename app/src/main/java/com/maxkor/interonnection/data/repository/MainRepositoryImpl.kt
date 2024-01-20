@@ -24,6 +24,10 @@ class MainRepositoryImpl @Inject constructor(
     private val mapper: PojoMapper
 ) : MainRepository {
 
+    override suspend fun insertToDb(dataModel: DataModel) {
+        db.getMainDao().insert(mapper.modelToEntity(dataModel))
+    }
+
     override suspend fun getData(hasInternetConnection: Boolean): List<DataModel> {
         if (hasInternetConnection) {
             loadDataFromServerToDb()
@@ -74,7 +78,7 @@ class MainRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getErrors() {
-//TODO
+      //TODO
     }
 
     override fun getDataReactive(): Flow<List<DataModel>> {

@@ -36,22 +36,24 @@ fun ListScreen(
     createLog("dataList = ${dataList.value}")
     var searchedText by remember { viewModel.searchedText }
 
-    val search: (String) -> Unit = { letters ->
-        viewModel.saveData(viewModel.stableList.value)
-        val filteredList = dataList.value.filter { model ->
-            model.fullName.lowercase().startsWith(letters.lowercase())
-        }
-        viewModel.saveData(filteredList)
-    }
+//    val search: (String) -> Unit = { letters ->
+//        viewModel.saveData(viewModel.stableList.value)
+//        val filteredList = dataList.value.filter { model ->
+//            model.fullName.lowercase().startsWith(letters.lowercase())
+//        }
+//        viewModel.saveData(filteredList)
+//    }
 
     Column(Modifier.fillMaxSize()) {
         SearchBar(
             query = searchedText,
             onQueryChange = {
                 searchedText = it
-                search(it)
+//                search(it)
             },
-            onSearch = { search(searchedText) },
+            onSearch = {
+//                search(searchedText)
+                       },
             active = false,
             onActiveChange = {},
             placeholder = { Text(text = "Search...") },
@@ -69,7 +71,6 @@ fun ListScreen(
                 }) {
                     DataCard(
                         dataModel = dataModel,
-                        textFieldTextState = textFieldText,
                         viewModel = viewModel
                     )
                 }

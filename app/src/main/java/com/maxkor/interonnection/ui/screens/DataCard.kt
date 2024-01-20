@@ -21,7 +21,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,17 +41,14 @@ import com.maxkor.interonnection.ui.SharedViewModel
 
 private const val MAX_MAIN_TEXT_LINES = 1
 private const val MAX_SECOND_TEXT_LINES = 2
-private const val EMPTY_TEXT = ""
 
 @Composable
 fun DataCard(
     dataModel: DataModel,
-    textFieldTextState: MutableState<String>,
     viewModel: SharedViewModel,
     modifier: Modifier = Modifier,
 ) {
-    var isFavorite by remember { mutableStateOf(dataModel.isFavorite) }
-    var extraText by remember { mutableStateOf(dataModel.extraText) }
+    var textFieldState by remember { mutableStateOf(dataModel.extraText) }
     val modeState = remember { mutableStateOf(CardState.defaultMode) }
 
     Card(
@@ -109,12 +105,12 @@ fun DataCard(
                         overflow = TextOverflow.Ellipsis
                     )
 
-                    if (isFavorite) {
+                    if (dataModel.isFavorite) {
                         when (modeState.value) {
                             CardState.ModeRead -> {
-                                if (extraText.isNotEmpty()) {
+                                if (textFieldState.isNotEmpty()) {
                                     FavoriteModeText(
-                                        text = extraText,
+                                        text = textFieldState,
                                         changeCardMode = {
                                             modeState.value = CardState.ModeEdit
                                         }
@@ -133,10 +129,10 @@ fun DataCard(
                                 Row {
 //                                    var textFieldText by remember { mutableStateOf("") }
                                     TextField(
-                                        value = textFieldTextState.value,
+                                        value = textFieldState,
                                         onValueChange = {
-                                            textFieldTextState.value = it
-                                            extraText = it
+//                                            textFieldState = it
+                                            textFieldState = it
                                         },
                                         modifier = Modifier.width(170.dp),
                                         textStyle = MaterialTheme.typography.bodySmall,
@@ -155,10 +151,10 @@ fun DataCard(
 
                                     IconButton(
                                         onClick = {
-                                            val newList = viewModel.dataLIst.value.toMutableList()
-                                            val index = newList.indexOf(dataModel)
-                                            newList[index] = dataModel.copy(extraText = extraText)
-                                            viewModel.saveData(newList)
+                                            viewModel.addDescription(
+                                                dataModel,
+                                                textFieldState
+                                            )
                                             modeState.value = CardState.ModeRead
                                         }
                                     ) {
@@ -177,43 +173,21 @@ fun DataCard(
 
             // Fav image section
             Row(modifier = Modifier.align(Alignment.CenterEnd)) {
-                if (isFavorite) {
-                    Image(
-                        painter = painterResource(id = R.drawable.iv_picked),
-                        contentDescription = "Favorite image",
-                        Modifier
-                            .size(32.dp)
-                            .clickable {
-                                val newList = viewModel.dataLIst.value.toMutableList()
-                                val index = newList.indexOf(dataModel)
-                                newList[index] = dataModel.copy(
-                                    extraText = EMPTY_TEXT,
-                                    isFavorite = false
-                                )
-                                viewModel.saveData(newList)
-                                extraText = EMPTY_TEXT
-                                textFieldTextState.value = EMPTY_TEXT
-                                isFavorite = false
-                            }
+                if (dataModel.isFavorite) {
+                    FavoriteImage(
+                        dataModel = dataModel,
+                        painterResourceId = R.drawable.iv_picked,
+                        changeFavoriteState = {
+                            viewModel.removeFromFavorites(dataModel)
+                            textFieldState = DataModel.DEFAULT_EXTRA_TEXT
+                        }
                     )
                 }
-                if (!isFavorite) {
-                    Image(
-                        painter = painterResource(id = R.drawable.iv_unpicked),
-                        contentDescription = "Favorite image",
-                        Modifier
-                            .size(32.dp)
-                            .clickable {
-                                val newList = viewModel.dataLIst.value.toMutableList()
-                                val index = newList.indexOf(dataModel)
-                                newList[index] = dataModel.copy(
-                                    extraText = extraText,
-                                    isFavorite = true
-                                )
-                                viewModel.saveData(newList)
-                                isFavorite = true
-                            }
-                    )
+                if (!dataModel.isFavorite) {
+                    FavoriteImage(
+                        dataModel = dataModel,
+                        R.drawable.iv_unpicked,
+                        changeFavoriteState = { viewModel.addToFavorites(dataModel) })
                 }
             }
         }
@@ -227,6 +201,21 @@ private sealed class CardState() {
     companion object {
         val defaultMode: CardState = ModeRead
     }
+}
+
+@Composable
+fun FavoriteImage(
+    dataModel: DataModel,
+    painterResourceId: Int,
+    changeFavoriteState: (DataModel) -> Unit
+) {
+    Image(
+        painter = painterResource(id = painterResourceId),
+        contentDescription = "Favorite image",
+        Modifier
+            .size(32.dp)
+            .clickable { changeFavoriteState.invoke(dataModel) }
+    )
 }
 
 @Composable

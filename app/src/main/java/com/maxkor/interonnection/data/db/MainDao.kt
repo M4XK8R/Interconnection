@@ -18,6 +18,9 @@ interface MainDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAllData(dataList: List<DataEntity>)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(dataList: DataEntity)
+
     @Query("SELECT * FROM main_data_table")
     fun getDataReactive(): Flow<List<DataEntity>>
 }
