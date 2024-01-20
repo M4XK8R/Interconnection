@@ -33,7 +33,6 @@ fun ListScreen(
 ) {
 //    val dataList = remember { viewModel.dataLIst }
     val dataList = viewModel.dataListReactive.collectAsState(initial = emptyList())
-    createLog("dataList = ${dataList.value}")
     var searchedText by remember { viewModel.searchedText }
 
 //    val search: (String) -> Unit = { letters ->
@@ -53,7 +52,7 @@ fun ListScreen(
             },
             onSearch = {
 //                search(searchedText)
-                       },
+            },
             active = false,
             onActiveChange = {},
             placeholder = { Text(text = "Search...") },
@@ -66,8 +65,9 @@ fun ListScreen(
             items(dataList.value) { dataModel ->
                 val textFieldText = remember { mutableStateOf("") }
                 Row(modifier = Modifier.clickable {
-                    viewModel.passCurrentElement(dataModel)
-                    navHelper.navigateTo(Screen.Detail.route)
+//                    viewModel.passCurrentElement(dataModel)
+//                    navHelper.navigateTo(Screen.Detail.route)
+                    navHelper.navigateToDetail(dataModel.id.toString())
                 }) {
                     DataCard(
                         dataModel = dataModel,

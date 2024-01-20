@@ -10,6 +10,7 @@ import com.maxkor.interonnection.domain.DataModel
 import com.maxkor.interonnection.domain.MainRepository
 import com.maxkor.interonnection.helpers.InternetChecker
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -49,6 +50,12 @@ class SharedViewModel @Inject constructor(
         loadAndSetUpData(hasInternetConnection)
     }
 
+    fun getElement(modelId: String) {
+        viewModelScope.launch {
+            _currentElement.value = repository.getElement(modelId.toInt())
+        }
+    }
+
     fun addToFavorites(dataModel: DataModel) {
         val newDataModel = dataModel.copy(
             isFavorite = !dataModel.isFavorite
@@ -71,9 +78,9 @@ class SharedViewModel @Inject constructor(
         insertToDb(newDataModel)
     }
 
-    fun passCurrentElement(dataModel: DataModel) {
-        _currentElement.value = dataModel
-    }
+//    fun passCurrentElement(dataModel: DataModel) {
+//        _currentElement.value = dataModel
+//    }
 
     private fun insertToDb(dataModel: DataModel) {
         viewModelScope.launch {

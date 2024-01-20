@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.maxkor.interonnection.createLog
 import com.maxkor.interonnection.helpers.ImageShareHelper.shareImageFromUrl
@@ -33,10 +34,15 @@ import com.maxkor.interonnection.helpers.PicturesSaver
 import com.maxkor.interonnection.ui.SharedViewModel
 
 @Composable
-fun DetailScreen(viewModel: SharedViewModel) {
-
+fun DetailScreen(
+    dataModelId: String,
+//    viewModel: SharedViewModel
+) {
+    val viewModel: SharedViewModel = hiltViewModel()
     val openDialog = remember { mutableStateOf(false) }
-    val element = viewModel.currentElement.value
+    val dataModel = viewModel.currentElement.value
+    viewModel.getElement(dataModelId)
+//    createLog("id = $id")
 
     val context = LocalContext.current
 
@@ -51,7 +57,7 @@ fun DetailScreen(viewModel: SharedViewModel) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = element.fullName,
+                    text = dataModel.fullName,
                     fontSize = TextUnit(22f, TextUnitType.Sp),
                     color = MaterialTheme.colorScheme.onSurface,
                     style = MaterialTheme.typography.bodyLarge,
@@ -63,7 +69,7 @@ fun DetailScreen(viewModel: SharedViewModel) {
                 Spacer(modifier = Modifier.size(15.dp))
 
                 AsyncImage(
-                    model = element.imageUrl,
+                    model = dataModel.imageUrl,
                     contentDescription = "Actor",
                     modifier = Modifier
                         .size(256.dp),
@@ -73,7 +79,7 @@ fun DetailScreen(viewModel: SharedViewModel) {
                 Spacer(modifier = Modifier.size(10.dp))
 
                 Text(
-                    text = element.extraText,
+                    text = dataModel.extraText,
                     fontSize = TextUnit(22f, TextUnitType.Sp),
                     color = MaterialTheme.colorScheme.onSurface,
                     style = MaterialTheme.typography.bodyLarge,
@@ -92,15 +98,15 @@ fun DetailScreen(viewModel: SharedViewModel) {
                     Button(onClick = {
                         PicturesSaver.saveImageToPicturesFolder(
                             context,
-                            element.imageUrl,
-                            "${element.fullName}.jpg"
+                            dataModel.imageUrl,
+                            "${dataModel.fullName}.jpg"
                         )
                     }) {
                         Text(text = "Save ")
                     }
 
                     Button(onClick = {
-                        shareImageFromUrl(context, element.imageUrl)
+                        shareImageFromUrl(context, dataModel.imageUrl)
                     }) {
                         Text(text = "Share")
                     }
@@ -119,7 +125,7 @@ fun DetailScreen(viewModel: SharedViewModel) {
         }
     }
     if (openDialog.value) {
-        ReminderDialog(openDialog, element.fullName)
+        ReminderDialog(openDialog, dataModel.fullName)
     }
 }
 

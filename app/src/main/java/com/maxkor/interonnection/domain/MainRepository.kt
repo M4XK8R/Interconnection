@@ -8,6 +8,8 @@ interface MainRepository {
 
     suspend fun getData(hasInternetConnection: Boolean): List<DataModel>
 
+    suspend fun getElement(modelId: Int) : DataModel
+
     suspend fun saveData(dataList: List<DataModel>)
 
     suspend fun getErrors()
