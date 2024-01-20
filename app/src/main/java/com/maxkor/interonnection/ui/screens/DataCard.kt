@@ -37,7 +37,6 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.maxkor.interonnection.R
 import com.maxkor.interonnection.domain.DataModel
-import com.maxkor.interonnection.ui.SharedViewModel
 
 private const val MAX_MAIN_TEXT_LINES = 1
 private const val MAX_SECOND_TEXT_LINES = 2
@@ -45,7 +44,9 @@ private const val MAX_SECOND_TEXT_LINES = 2
 @Composable
 fun DataCard(
     dataModel: DataModel,
-    viewModel: SharedViewModel,
+    addToFavorites: (DataModel) -> Unit,
+    removeFromFavorites: (DataModel) -> Unit,
+    addDescription: (DataModel, String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var textFieldState by remember { mutableStateOf(dataModel.extraText) }
@@ -151,10 +152,11 @@ fun DataCard(
 
                                     IconButton(
                                         onClick = {
-                                            viewModel.addDescription(
-                                                dataModel,
-                                                textFieldState
-                                            )
+//                                            viewModel.addDescription(
+//                                                dataModel,
+//                                                textFieldState
+//                                            )
+                                            addDescription.invoke(dataModel, textFieldState)
                                             modeState.value = CardState.ModeRead
                                         }
                                     ) {
@@ -177,9 +179,10 @@ fun DataCard(
                     FavoriteImage(
                         dataModel = dataModel,
                         painterResourceId = R.drawable.iv_picked,
-                        changeFavoriteState = {
-                            viewModel.removeFromFavorites(dataModel)
-                            textFieldState = DataModel.DEFAULT_EXTRA_TEXT
+                        changeFavoriteState = { dataModel ->
+                            removeFromFavorites.invoke(dataModel)
+//                            viewModel.removeFromFavorites(dataModel)
+//                            textFieldState = DataModel.DEFAULT_EXTRA_TEXT
                         }
                     )
                 }
@@ -187,7 +190,11 @@ fun DataCard(
                     FavoriteImage(
                         dataModel = dataModel,
                         R.drawable.iv_unpicked,
-                        changeFavoriteState = { viewModel.addToFavorites(dataModel) })
+                        changeFavoriteState = { dataModel ->
+//                            viewModel.addToFavorites(dataModel)
+                            addToFavorites.invoke(dataModel)
+                        }
+                    )
                 }
             }
         }

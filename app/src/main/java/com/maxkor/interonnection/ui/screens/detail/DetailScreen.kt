@@ -25,24 +25,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
-import com.maxkor.interonnection.createLog
 import com.maxkor.interonnection.helpers.ImageShareHelper.shareImageFromUrl
 import com.maxkor.interonnection.helpers.PicturesSaver
-import com.maxkor.interonnection.ui.SharedViewModel
 
 @Composable
 fun DetailScreen(
     dataModelId: String,
-//    viewModel: SharedViewModel
+    viewModel: DetailViewModel = hiltViewModel()
 ) {
-    val viewModel: SharedViewModel = hiltViewModel()
     val openDialog = remember { mutableStateOf(false) }
     val dataModel = viewModel.currentElement.value
-    viewModel.getElement(dataModelId)
-//    createLog("id = $id")
+    viewModel.getElement(dataModelId.toInt())
 
     val context = LocalContext.current
 

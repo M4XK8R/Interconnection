@@ -19,17 +19,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.maxkor.interonnection.createLog
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.maxkor.interonnection.navigation.NavigationHelper
-import com.maxkor.interonnection.navigation.Screen
-import com.maxkor.interonnection.ui.SharedViewModel
 import com.maxkor.interonnection.ui.screens.DataCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListScreen(
-    viewModel: SharedViewModel,
     navHelper: NavigationHelper,
+    viewModel: ListViewModel = hiltViewModel()
 ) {
 //    val dataList = remember { viewModel.dataLIst }
     val dataList = viewModel.dataListReactive.collectAsState(initial = emptyList())
@@ -71,7 +69,11 @@ fun ListScreen(
                 }) {
                     DataCard(
                         dataModel = dataModel,
-                        viewModel = viewModel
+                        addToFavorites = { viewModel.addToFavorites(it) },
+                        removeFromFavorites = { viewModel.removeFromFavorites(it) },
+                        addDescription = { dataModel, text ->
+                            viewModel.addDescription(dataModel, text)
+                        }
                     )
                 }
             }
