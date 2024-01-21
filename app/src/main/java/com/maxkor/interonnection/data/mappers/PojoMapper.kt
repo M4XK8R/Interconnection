@@ -11,6 +11,7 @@ class PojoMapper @Inject constructor() {
         return DataModel(
             id = entity.id,
             fullName = entity.fullName,
+            price = entity.price,
             imageUrl = entity.imageUrl,
             extraText = entity.extraText,
             isFavorite = entity.isFavorite
@@ -21,6 +22,7 @@ class PojoMapper @Inject constructor() {
         return DataEntity(
             id = model.id,
             fullName = model.fullName,
+            price = model.price,
             imageUrl = model.imageUrl,
             extraText = model.extraText,
             isFavorite = model.isFavorite
@@ -31,6 +33,7 @@ class PojoMapper @Inject constructor() {
         return DataModel(
             id = dto.id,
             fullName = dto.fullName,
+            price = dto.price,
             imageUrl = dto.imageUrl,
             extraText = dto.extraText,
             isFavorite = dto.isFavorite
@@ -41,6 +44,7 @@ class PojoMapper @Inject constructor() {
         return DataEntity(
             id = dto.id,
             fullName = dto.fullName,
+            price = dto.price,
             imageUrl = dto.imageUrl,
             extraText = dto.extraText,
             isFavorite = dto.isFavorite

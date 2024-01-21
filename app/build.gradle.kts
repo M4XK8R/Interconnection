@@ -53,6 +53,9 @@ android {
 
 dependencies {
 
+    // Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+
     // Hilt
     val hiltVersion = "2.50"
     implementation("com.google.dagger:hilt-android:$hiltVersion")
@@ -70,6 +73,11 @@ dependencies {
     // Coil
     implementation("io.coil-kt:coil-compose:2.5.0")
 
+    // OkHttp
+    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.12.0"))
+    implementation("com.squareup.okhttp3:okhttp")
+    implementation("com.squareup.okhttp3:logging-interceptor")
+
     // Moshi
     implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
     // Retrofit
@@ -77,8 +85,8 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
 
     // Navigation
-    val nav_version = "2.7.6"
-    implementation("androidx.navigation:navigation-compose:$nav_version")
+    val navVersion = "2.7.6"
+    implementation("androidx.navigation:navigation-compose:$navVersion")
 
     // Base
     implementation("androidx.core:core-ktx:1.12.0")

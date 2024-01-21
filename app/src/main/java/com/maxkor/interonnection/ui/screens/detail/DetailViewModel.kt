@@ -1,6 +1,5 @@
 package com.maxkor.interonnection.ui.screens.detail
 
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -9,15 +8,10 @@ import com.maxkor.interonnection.createLog
 import com.maxkor.interonnection.domain.DataModel
 import com.maxkor.interonnection.domain.usecases.AddDescriptionUseCase
 import com.maxkor.interonnection.domain.usecases.AddToFavoritesUseCase
-import com.maxkor.interonnection.domain.usecases.GetDataReactiveUseCase
-import com.maxkor.interonnection.domain.usecases.GetDataUseCase
 import com.maxkor.interonnection.domain.usecases.GetElementUseCase
 import com.maxkor.interonnection.domain.usecases.RemoveFromFavoritesUseCase
-import com.maxkor.interonnection.domain.usecases.SaveDataUseCase
-import com.maxkor.interonnection.helpers.InternetChecker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.invoke
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
