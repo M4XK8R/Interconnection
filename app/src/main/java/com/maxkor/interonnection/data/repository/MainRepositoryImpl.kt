@@ -34,8 +34,8 @@ class MainRepositoryImpl @Inject constructor(
     }
 
     override suspend fun loadDataFromServerToDb(hasInternetConnection: Boolean) {
-        createLog("loadDataFromServerToDb")
         if (hasInternetConnection) {
+            createLog("loadDataFromServerToDb")
             try {
                 val newData = mutableListOf<DataEntity>()
                 val response = api.getResponse()

@@ -1,5 +1,6 @@
 package com.maxkor.interonnection.ui.screens.list
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,7 +15,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -23,6 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.maxkor.interonnection.navigation.NavigationHelper
 import com.maxkor.interonnection.ui.screens.DataCard
 
+@SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListScreen(
@@ -30,48 +31,29 @@ fun ListScreen(
     viewModel: ListViewModel = hiltViewModel()
 ) {
     var searchedText by remember { viewModel.searchedText }
-//    val dataList = remember { viewModel.dataLIst }
-    val dataList = viewModel.dataListReactive.collectAsState(initial = emptyList())
 
-
-//    val stableList = dataList.value.toList()
-    val search: (String) -> Unit = { letters ->
-        val stableList = dataList.value.toList()
-        val filteredList = dataList.value.filter { model ->
-            model.fullName.lowercase().startsWith(letters.lowercase())
-        }
-//        viewModel.saveData(filteredList)
+    val dataList = viewModel.dataListReactive.collectAsState(
+        initial = emptyList()
+    ).value.filter { model ->
+        model.fullName.lowercase().startsWith(searchedText.lowercase())
     }
-
-//    val search: (String) -> Unit = { letters ->
-//        viewModel.saveData(viewModel.stableList.value)
-//        val filteredList = dataList.value.filter { model ->
-//            model.fullName.lowercase().startsWith(letters.lowercase())
-//        }
-//        viewModel.saveData(filteredList)
-//    }
 
     Column(Modifier.fillMaxSize()) {
         SearchBar(
             query = searchedText,
-            onQueryChange = {
-                searchedText = it
-                search(it)
-            },
-            onSearch = {
-                search(searchedText)
-            },
+            onQueryChange = { searchedText = it },
+            onSearch = {},
             active = false,
             onActiveChange = {},
             placeholder = { Text(text = "Search...") },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(5.dp)
-        ) { TODO() }
+                .padding(5.dp),
+            content = {}
+        )
 
         LazyColumn() {
-            items(dataList.value) { dataModel ->
-                val textFieldText = remember { mutableStateOf("") }
+            items(dataList) { dataModel ->
                 Row(modifier = Modifier.clickable {
                     navHelper.navigateToDetail(dataModel.id.toString())
                 }) {

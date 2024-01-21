@@ -48,5 +48,5 @@ class ListViewModel @Inject constructor(
             addDescriptionUseCase(dataModel, text)
         }
     }
-    
+
 }
