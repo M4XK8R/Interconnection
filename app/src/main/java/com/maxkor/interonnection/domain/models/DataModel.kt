@@ -1,4 +1,4 @@
-package com.maxkor.interonnection.domain
+package com.maxkor.interonnection.domain.models
 
 data class DataModel(
     val id: Int,

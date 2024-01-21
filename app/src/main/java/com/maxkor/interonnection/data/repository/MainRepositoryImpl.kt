@@ -5,8 +5,8 @@ import com.maxkor.interonnection.data.db.DataEntity
 import com.maxkor.interonnection.data.db.InternalDataBase
 import com.maxkor.interonnection.data.mappers.PojoMapper
 import com.maxkor.interonnection.data.retrofit.ApiService
-import com.maxkor.interonnection.domain.DataModel
-import com.maxkor.interonnection.domain.MainRepository
+import com.maxkor.interonnection.domain.models.DataModel
+import com.maxkor.interonnection.domain.repository.MainRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

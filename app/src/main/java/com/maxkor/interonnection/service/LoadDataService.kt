@@ -5,8 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import com.maxkor.interonnection.createLog
+import com.maxkor.interonnection.domain.usecases.CheckInternetUseCase
 import com.maxkor.interonnection.domain.usecases.LoadDataFromServerToDbUseCase
-import com.maxkor.interonnection.helpers.InternetChecker
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +24,7 @@ class LoadDataService : Service() {
     lateinit var loadDataFromServerToDbUseCase: LoadDataFromServerToDbUseCase
 
     @Inject
-    lateinit var internetChecker: InternetChecker
+    lateinit var checkInternetUseCase: CheckInternetUseCase
 
     private val coroutineScopeIO = CoroutineScope(Dispatchers.IO)
     private var shouldLoadData = true
@@ -40,7 +40,7 @@ class LoadDataService : Service() {
         CoroutineScope(Dispatchers.IO).launch {
             while (shouldLoadData) {
                 createLog("Service loading data")
-                val hasInternetConnection = internetChecker.isNetworkAvailable()
+                val hasInternetConnection = checkInternetUseCase()
                 loadDataFromServerToDbUseCase(hasInternetConnection)
                 delay(DOWNTIME)
             }

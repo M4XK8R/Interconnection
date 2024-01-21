@@ -6,11 +6,15 @@ import android.os.Build
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
+import com.maxkor.interonnection.domain.helpers.ActivityResultHelper
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
-object ActivityResultHelper {
+class ActivityResultHelperImpl @Inject constructor(
+    @ApplicationContext private val context: Context
+) : ActivityResultHelper {
 
-    fun <V> checkPermission(
-        context: Context,
+    override fun <V> checkPermission(
         launcher: ManagedActivityResultLauncher<String, V>,
         noPermissionCase: () -> Unit,
         defaultCase: () -> Unit,

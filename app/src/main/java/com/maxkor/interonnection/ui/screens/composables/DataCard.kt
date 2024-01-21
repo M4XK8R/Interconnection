@@ -1,4 +1,4 @@
-package com.maxkor.interonnection.ui.screens
+package com.maxkor.interonnection.ui.screens.composables
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.maxkor.interonnection.R
-import com.maxkor.interonnection.domain.DataModel
+import com.maxkor.interonnection.domain.models.DataModel
 import kotlin.math.roundToInt
 
 private const val MAX_MAIN_TEXT_LINES = 1

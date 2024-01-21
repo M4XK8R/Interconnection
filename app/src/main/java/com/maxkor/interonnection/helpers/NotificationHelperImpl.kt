@@ -7,18 +7,18 @@ import android.app.Service
 import android.content.Context
 import androidx.core.app.NotificationCompat
 import com.maxkor.interonnection.R
+import com.maxkor.interonnection.domain.helpers.NotificationHelper
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
-private const val DEFAULT_CONTENT_TEXT = "Test text"
 private const val CHANNEL_ID = "channel_id"
 private const val NOTIFICATION_ID = 79416
 
-object NotificationHelper {
+class NotificationHelperImpl @Inject constructor(
+    @ApplicationContext private val context: Context
+) : NotificationHelper {
 
-    fun showNotification(
-        context: Context,
-        contentText: String = DEFAULT_CONTENT_TEXT,
-        contentIntent: PendingIntent? = null
-        ) {
+    override fun showNotification(contentText: String?, contentIntent: PendingIntent?) {
         val notyManager = context.getSystemService(
             Service.NOTIFICATION_SERVICE
         ) as NotificationManager

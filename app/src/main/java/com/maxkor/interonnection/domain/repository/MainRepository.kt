@@ -1,5 +1,6 @@
-package com.maxkor.interonnection.domain
+package com.maxkor.interonnection.domain.repository
 
+import com.maxkor.interonnection.domain.models.DataModel
 import kotlinx.coroutines.flow.Flow
 
 interface MainRepository {

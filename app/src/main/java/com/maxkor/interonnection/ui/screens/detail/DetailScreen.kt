@@ -27,8 +27,7 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
-import com.maxkor.interonnection.helpers.ImageShareHelper.shareImageFromUrl
-import com.maxkor.interonnection.helpers.PicturesSaver
+import com.maxkor.interonnection.helpers.PicturesSaverImpl
 
 @Composable
 fun DetailScreen(
@@ -90,19 +89,23 @@ fun DetailScreen(
                     horizontalArrangement = Arrangement.SpaceAround
                 ) {
                     val coroutine = rememberCoroutineScope()
-                    Button(onClick = {
-                        PicturesSaver.saveImageToPicturesFolder(
-                            context,
-                            dataModel.imageUrl,
-                            "${dataModel.fullName}.jpg"
-                        )
-                    }) {
+                    Button(
+                        onClick = {
+                            viewModel.saveImage(
+                                context,
+                                dataModel.imageUrl,
+                                "${dataModel.fullName}.jpg"
+                            )
+                        }
+                    ) {
                         Text(text = "Save ")
                     }
 
-                    Button(onClick = {
-                        shareImageFromUrl(context, dataModel.imageUrl)
-                    }) {
+                    Button(
+                        onClick = {
+                            viewModel.shareImage(dataModel.imageUrl, context)
+                        }
+                    ) {
                         Text(text = "Share")
                     }
                 }
@@ -120,7 +123,19 @@ fun DetailScreen(
         }
     }
     if (openDialog.value) {
-        ReminderDialog(openDialog, dataModel.fullName)
+        ReminderDialog(
+            openDialog = openDialog,
+            name = dataModel.fullName,
+            createAlarm = { time, name ->
+                viewModel.createAlarm(time, name)
+            },
+            showNotification = { notyText ->
+                viewModel.showNotification(notyText, null)
+            },
+            checkPermission = { launcher, noPermissionCase, defaultCase ->
+                viewModel.checkPermission(launcher, noPermissionCase, defaultCase)
+            }
+        )
     }
 }
 

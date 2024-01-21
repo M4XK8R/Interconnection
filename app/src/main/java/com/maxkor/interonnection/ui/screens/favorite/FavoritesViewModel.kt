@@ -3,7 +3,7 @@ package com.maxkor.interonnection.ui.screens.favorite
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.maxkor.interonnection.createLog
-import com.maxkor.interonnection.domain.DataModel
+import com.maxkor.interonnection.domain.models.DataModel
 import com.maxkor.interonnection.domain.usecases.AddDescriptionUseCase
 import com.maxkor.interonnection.domain.usecases.AddToFavoritesUseCase
 import com.maxkor.interonnection.domain.usecases.GetDataReactiveUseCase

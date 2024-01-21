@@ -1,5 +1,6 @@
 package com.maxkor.interonnection.ui.screens.detail
 
+import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -36,9 +37,6 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import com.maxkor.interonnection.createLog
-import com.maxkor.interonnection.helpers.ActivityResultHelper
-import com.maxkor.interonnection.helpers.AlarmHelper
-import com.maxkor.interonnection.helpers.NotificationHelper
 
 private const val FIFTEEN_MIN_IN_MILLIS = 900_000L
 private const val ONE_HOUR_IN_MILLIS = 3_600_000L
@@ -52,10 +50,18 @@ private const val SEVEN_DAYS = "7 days"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ReminderDialog (
+fun ReminderDialog(
     openDialog: MutableState<Boolean>,
-    characterName: String,
+    name: String,
+    createAlarm: (time: Long, name: String) -> Unit,
+    showNotification: (notyText: String) -> Unit,
+    checkPermission: (
+        launcher: ManagedActivityResultLauncher<String, Boolean>,
+        noPermissionCase: () -> Unit,
+        defaultCase: () -> Unit,
+    ) -> Unit
 ) {
+
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
         onResult = { isGranted ->
@@ -143,13 +149,12 @@ fun ReminderDialog (
                 val context = LocalContext.current
                 Button(
                     onClick = {
-                        ActivityResultHelper.checkPermission(
-                            context = context,
-                            launcher = launcher,
-                            noPermissionCase = {
+                        checkPermission.invoke(
+                            launcher,
+                            {
 //                                TODO()
                             },
-                            defaultCase = {
+                            {
 //                              TODO()
                             }
                         )
@@ -160,9 +165,11 @@ fun ReminderDialog (
                             SEVEN_DAYS_IN_MILLIS -> SEVEN_DAYS
                             else -> throw Exception("Unknown time. Smth went wrong")
                         }
-                        val notyText = "You  will be notified about $characterName in $requiredTime"
-                        AlarmHelper.createAlarm(context, time, characterName)
-                        NotificationHelper.showNotification(context, notyText)
+                        val notyText = "You  will be notified about $name in $requiredTime"
+//                        AlarmHelperImpl.createAlarm(context, time, characterName)
+//                        NotificationHelperImpl.showNotification(context, notyText)
+                        createAlarm.invoke(4000L, name)
+                        showNotification.invoke(notyText)
                         openDialog.value = false
                     },
                     modifier = Modifier

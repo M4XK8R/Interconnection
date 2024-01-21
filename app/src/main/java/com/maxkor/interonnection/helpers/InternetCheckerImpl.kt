@@ -4,14 +4,15 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
+import com.maxkor.interonnection.domain.helpers.InternetChecker
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-class InternetChecker @Inject constructor(
+class InternetCheckerImpl @Inject constructor(
     @ApplicationContext private val context: Context
-) {
+) : InternetChecker {
 
-    fun isNetworkAvailable(): Boolean {
+    override fun isNetworkAvailable(): Boolean {
         val connectivityManager = context.getSystemService(
             Context.CONNECTIVITY_SERVICE
         ) as ConnectivityManager

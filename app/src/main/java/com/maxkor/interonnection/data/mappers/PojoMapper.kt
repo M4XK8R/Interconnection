@@ -2,7 +2,7 @@ package com.maxkor.interonnection.data.mappers
 
 import com.maxkor.interonnection.data.db.DataEntity
 import com.maxkor.interonnection.data.retrofit.DataModelDto
-import com.maxkor.interonnection.domain.DataModel
+import com.maxkor.interonnection.domain.models.DataModel
 import javax.inject.Inject
 
 class PojoMapper @Inject constructor() {
