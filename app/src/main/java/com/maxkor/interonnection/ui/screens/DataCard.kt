@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.maxkor.interonnection.R
 import com.maxkor.interonnection.domain.DataModel
+import kotlin.math.roundToInt
 
 private const val MAX_MAIN_TEXT_LINES = 1
 private const val MAX_SECOND_TEXT_LINES = 2
@@ -94,8 +95,10 @@ fun DataCard(
                     ,
                     verticalArrangement = Arrangement.SpaceBetween
                 ) {
+                    val price = dataModel.price.toDouble()
+                    val priceRound = (price * 100.0).roundToInt() / 100.0
                     Text(
-                        text = dataModel.fullName,
+                        text = "${dataModel.fullName} $priceRound",
 //                      modifier = Modifier.requiredWidthIn(100.dp, 150.dp),
                         fontSize = TextUnit(18f, TextUnitType.Sp),
                         color = MaterialTheme.colorScheme.onSurface,

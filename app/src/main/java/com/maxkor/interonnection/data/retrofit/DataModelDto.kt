@@ -1,16 +1,20 @@
 package com.maxkor.interonnection.data.retrofit
 
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
 data class DataModelDto(
 
-    @Json(name = "id")
+    @Json(name = "rank")
     val id: Int,
 
-    @Json(name = "fullName")
+    @Json(name = "symbol")
     val fullName: String,
 
-    @Json(name = "imageUrl")
+    @Json(name = "price")
+    val price: String,
+
+    @Json(name = "iconUrl")
     val imageUrl: String,
 
     var extraText: String = "",

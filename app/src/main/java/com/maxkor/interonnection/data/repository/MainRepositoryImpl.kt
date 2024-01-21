@@ -18,7 +18,6 @@ class MainRepositoryImpl @Inject constructor(
 ) : MainRepository {
 
     override fun getDataReactive(): Flow<List<DataModel>> {
-        createLog("MainRepositoryImpl getDataReactive")
         return db.getMainDao().getDataReactive().map { entityList ->
             entityList.map { entityModel ->
                 mapper.entityToModel(entityModel)
@@ -35,12 +34,14 @@ class MainRepositoryImpl @Inject constructor(
     }
 
     override suspend fun loadDataFromServerToDb(hasInternetConnection: Boolean) {
+        createLog("loadDataFromServerToDb")
         if (hasInternetConnection) {
             try {
                 val newData = mutableListOf<DataEntity>()
                 val response = api.getResponse()
+                createLog("response = ${response.body()}")
                 if (response.isSuccessful) {
-                    response.body()?.forEach { dto ->
+                    response.body()?.data?.coins?.forEach { dto ->
                         newData.add(mapper.dtoToEntity(dto))
                     }
                     val oldData = db.getMainDao().getAll()
@@ -62,7 +63,9 @@ class MainRepositoryImpl @Inject constructor(
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
-                e.localizedMessage?.let { createLog(it) }
+                e.localizedMessage?.let {
+                    createLog("loadDataFromServerToDb exception = $it")
+                }
             }
         }
     }

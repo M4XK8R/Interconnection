@@ -8,6 +8,7 @@ data class DataEntity(
     @PrimaryKey
     val id: Int,
     val fullName: String,
+    val price: String,
     val imageUrl: String,
     var extraText: String,
     var isFavorite: Boolean

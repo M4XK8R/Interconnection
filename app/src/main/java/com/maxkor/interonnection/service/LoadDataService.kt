@@ -15,7 +15,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-private const val DOWNTIME = 10000L
+private const val DOWNTIME = 60_000L
 
 @AndroidEntryPoint
 class LoadDataService : Service() {
@@ -40,9 +40,9 @@ class LoadDataService : Service() {
         CoroutineScope(Dispatchers.IO).launch {
             while (shouldLoadData) {
                 createLog("Service loading data")
-                delay(DOWNTIME)
                 val hasInternetConnection = internetChecker.isNetworkAvailable()
                 loadDataFromServerToDbUseCase(hasInternetConnection)
+                delay(DOWNTIME)
             }
         }
         return START_STICKY

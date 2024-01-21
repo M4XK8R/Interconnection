@@ -11,12 +11,16 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
 private const val DB_NAME = "offline_database"
-private const val BASE_URL = "https://thronesapi.com/"
+
+//private const val BASE_URL = "https://thronesapi.com/"
+private const val BASE_URL = "https://api.coinranking.com/"
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -35,12 +39,22 @@ class NonStaticModule {
     @Provides
     @Singleton
     fun provideApi(): ApiService {
+
+        val interceptor = HttpLoggingInterceptor().also {
+            it.level = HttpLoggingInterceptor.Level.BODY
+        }
+
+        val okHttpClient = OkHttpClient.Builder()
+            .addInterceptor(interceptor)
+            .build()
+
         val moshi = Moshi.Builder()
             .add(KotlinJsonAdapterFactory())
             .build()
 
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
+            .client(okHttpClient)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
 

@@ -29,9 +29,19 @@ fun ListScreen(
     navHelper: NavigationHelper,
     viewModel: ListViewModel = hiltViewModel()
 ) {
+    var searchedText by remember { viewModel.searchedText }
 //    val dataList = remember { viewModel.dataLIst }
     val dataList = viewModel.dataListReactive.collectAsState(initial = emptyList())
-    var searchedText by remember { viewModel.searchedText }
+
+
+//    val stableList = dataList.value.toList()
+    val search: (String) -> Unit = { letters ->
+        val stableList = dataList.value.toList()
+        val filteredList = dataList.value.filter { model ->
+            model.fullName.lowercase().startsWith(letters.lowercase())
+        }
+//        viewModel.saveData(filteredList)
+    }
 
 //    val search: (String) -> Unit = { letters ->
 //        viewModel.saveData(viewModel.stableList.value)
@@ -46,10 +56,10 @@ fun ListScreen(
             query = searchedText,
             onQueryChange = {
                 searchedText = it
-//                search(it)
+                search(it)
             },
             onSearch = {
-//                search(searchedText)
+                search(searchedText)
             },
             active = false,
             onActiveChange = {},
@@ -63,8 +73,6 @@ fun ListScreen(
             items(dataList.value) { dataModel ->
                 val textFieldText = remember { mutableStateOf("") }
                 Row(modifier = Modifier.clickable {
-//                    viewModel.passCurrentElement(dataModel)
-//                    navHelper.navigateTo(Screen.Detail.route)
                     navHelper.navigateToDetail(dataModel.id.toString())
                 }) {
                     DataCard(
