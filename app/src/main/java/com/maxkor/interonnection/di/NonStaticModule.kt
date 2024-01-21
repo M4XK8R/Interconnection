@@ -1,14 +1,20 @@
 package com.maxkor.interonnection.di
 
+import android.app.Activity
 import android.content.Context
 import androidx.room.Room
+import com.maxkor.interonnection.MainActivity
 import com.maxkor.interonnection.data.db.InternalDataBase
 import com.maxkor.interonnection.data.retrofit.ApiService
+import com.maxkor.interonnection.domain.helpers.ImageShareHelper
+import com.maxkor.interonnection.helpers.ImageShareHelperImpl
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ActivityContext
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient

@@ -1,4 +1,4 @@
-package com.maxkor.interonnection.ui.screens
+package com.maxkor.interonnection.ui.screens.base
 
 import android.annotation.SuppressLint
 import androidx.compose.material3.Scaffold
@@ -23,7 +23,7 @@ fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
 
     Scaffold(
         bottomBar = { MyBottomBar(navHelper) },
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
     ) {
         MainNavGraph(
             navHostController = navHelper.navHostController,

@@ -6,14 +6,16 @@ import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Environment
 import android.widget.Toast
+import com.maxkor.interonnection.domain.helpers.PicturesSaver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.net.URL
+import javax.inject.Inject
 
-object PicturesSaver {
+class PicturesSaverImpl @Inject constructor() : PicturesSaver{
 
     // Does not work properly
     fun saveImageToGallery(
@@ -87,7 +89,7 @@ This method can be used to download an image from the internet using a url in An
 download the file and added it to the Gallery. Downloaded image will be saved to "Pictures"
 Folder in your internal storage
 */
-    fun saveImageToPicturesFolder(
+   override fun saveImageToPicturesFolder(
         context: Context,
         downloadUrlOfImage: String,
         filename: String

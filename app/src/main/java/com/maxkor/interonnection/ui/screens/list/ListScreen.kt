@@ -21,7 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.maxkor.interonnection.navigation.NavigationHelper
-import com.maxkor.interonnection.ui.screens.DataCard
+import com.maxkor.interonnection.ui.screens.composables.DataCard
 
 @SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -38,7 +38,11 @@ fun ListScreen(
         model.fullName.lowercase().startsWith(searchedText.lowercase())
     }
 
-    Column(Modifier.fillMaxSize()) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(bottom = 86.dp)
+    ) {
         SearchBar(
             query = searchedText,
             onQueryChange = { searchedText = it },

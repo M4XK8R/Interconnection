@@ -8,7 +8,7 @@ import androidx.compose.material3.rememberDismissState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.maxkor.interonnection.ui.screens.DataCard
+import com.maxkor.interonnection.ui.screens.composables.DataCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

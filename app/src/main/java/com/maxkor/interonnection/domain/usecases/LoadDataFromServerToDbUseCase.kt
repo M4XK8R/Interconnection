@@ -1,6 +1,6 @@
 package com.maxkor.interonnection.domain.usecases
 
-import com.maxkor.interonnection.domain.MainRepository
+import com.maxkor.interonnection.domain.repository.MainRepository
 import javax.inject.Inject
 
 class LoadDataFromServerToDbUseCase @Inject constructor(

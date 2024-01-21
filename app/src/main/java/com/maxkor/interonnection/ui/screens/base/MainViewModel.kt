@@ -1,22 +1,23 @@
-package com.maxkor.interonnection.ui.screens
+package com.maxkor.interonnection.ui.screens.base
 
 import androidx.compose.material3.SnackbarHostState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.maxkor.interonnection.helpers.InternetChecker
+import com.maxkor.interonnection.domain.usecases.CheckInternetUseCase
+
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    internetChecker: InternetChecker
+    checkInternetUseCase: CheckInternetUseCase
 ) : ViewModel() {
 
     val snackbarHostState = SnackbarHostState()
 
     init {
-        val hasInternetConnection = internetChecker.isNetworkAvailable()
+        val hasInternetConnection = checkInternetUseCase()
         if (!hasInternetConnection) {
             viewModelScope.launch {
                 snackbarHostState.showSnackbar("NO INTERNET CONNECTION")
