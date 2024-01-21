@@ -22,7 +22,6 @@ fun NavGraphBuilder.nestedNavGraph(
                 ?: throw Exception(
                     "Navigation to detail screen failed dataModelId = null"
                 )
-            createLog("dataModelId = $dataModelId")
             detailScreenContent(dataModelId)
         }
     }

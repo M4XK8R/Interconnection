@@ -161,7 +161,7 @@ fun ReminderDialog (
                             else -> throw Exception("Unknown time. Smth went wrong")
                         }
                         val notyText = "You  will be notified about $characterName in $requiredTime"
-                        AlarmHelper.createAlarm(context, 5000L, characterName)
+                        AlarmHelper.createAlarm(context, time, characterName)
                         NotificationHelper.showNotification(context, notyText)
                         openDialog.value = false
                     },

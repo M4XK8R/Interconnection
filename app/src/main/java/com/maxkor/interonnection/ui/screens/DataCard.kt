@@ -131,13 +131,9 @@ fun DataCard(
 
                             CardState.ModeEdit -> {
                                 Row {
-//                                    var textFieldText by remember { mutableStateOf("") }
                                     TextField(
                                         value = textFieldState,
-                                        onValueChange = {
-//                                            textFieldState = it
-                                            textFieldState = it
-                                        },
+                                        onValueChange = { textFieldState = it },
                                         modifier = Modifier.width(170.dp),
                                         textStyle = MaterialTheme.typography.bodySmall,
                                         placeholder = {
@@ -155,10 +151,6 @@ fun DataCard(
 
                                     IconButton(
                                         onClick = {
-//                                            viewModel.addDescription(
-//                                                dataModel,
-//                                                textFieldState
-//                                            )
                                             addDescription.invoke(dataModel, textFieldState)
                                             modeState.value = CardState.ModeRead
                                         }
@@ -184,8 +176,7 @@ fun DataCard(
                         painterResourceId = R.drawable.iv_picked,
                         changeFavoriteState = { dataModel ->
                             removeFromFavorites.invoke(dataModel)
-//                            viewModel.removeFromFavorites(dataModel)
-//                            textFieldState = DataModel.DEFAULT_EXTRA_TEXT
+                            textFieldState = DataModel.DEFAULT_EXTRA_TEXT
                         }
                     )
                 }
@@ -194,7 +185,6 @@ fun DataCard(
                         dataModel = dataModel,
                         R.drawable.iv_unpicked,
                         changeFavoriteState = { dataModel ->
-//                            viewModel.addToFavorites(dataModel)
                             addToFavorites.invoke(dataModel)
                         }
                     )
@@ -204,17 +194,8 @@ fun DataCard(
     }
 }
 
-private sealed class CardState() {
-    data object ModeRead : CardState()
-    data object ModeEdit : CardState()
-
-    companion object {
-        val defaultMode: CardState = ModeRead
-    }
-}
-
 @Composable
-fun FavoriteImage(
+private fun FavoriteImage(
     dataModel: DataModel,
     painterResourceId: Int,
     changeFavoriteState: (DataModel) -> Unit
@@ -246,4 +227,13 @@ private fun FavoriteModeText(
         softWrap = true,
         overflow = TextOverflow.Ellipsis
     )
+}
+
+private sealed class CardState() {
+    data object ModeRead : CardState()
+    data object ModeEdit : CardState()
+
+    companion object {
+        val defaultMode: CardState = ModeRead
+    }
 }
