@@ -3,7 +3,6 @@ package com.maxkor.interonnection.ui.screens.list
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.maxkor.interonnection.createLog
 import com.maxkor.interonnection.domain.models.DataModel
 import com.maxkor.interonnection.domain.usecases.AddDescriptionUseCase
 import com.maxkor.interonnection.domain.usecases.AddToFavoritesUseCase
@@ -26,11 +25,6 @@ class ListViewModel @Inject constructor(
 
     val searchedText = mutableStateOf("")
 
-    override fun onCleared() {
-        createLog("ListViewModel onCleared")
-        super.onCleared()
-    }
-
     fun addToFavorites(dataModel: DataModel) {
         viewModelScope.launch(Dispatchers.IO) {
             addToFavoritesUseCase(dataModel)
@@ -48,5 +42,4 @@ class ListViewModel @Inject constructor(
             addDescriptionUseCase(dataModel, text)
         }
     }
-
 }

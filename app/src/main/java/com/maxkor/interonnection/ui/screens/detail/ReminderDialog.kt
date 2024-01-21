@@ -1,5 +1,6 @@
 package com.maxkor.interonnection.ui.screens.detail
 
+import android.app.PendingIntent
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -32,11 +33,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
-import com.maxkor.interonnection.createLog
 
 private const val FIFTEEN_MIN_IN_MILLIS = 900_000L
 private const val ONE_HOUR_IN_MILLIS = 3_600_000L
@@ -52,9 +51,10 @@ private const val SEVEN_DAYS = "7 days"
 @Composable
 fun ReminderDialog(
     openDialog: MutableState<Boolean>,
+    itemId: String,
     name: String,
-    createAlarm: (time: Long, name: String) -> Unit,
-    showNotification: (notyText: String) -> Unit,
+    createAlarm: (time: Long, name: String, itemId: String) -> Unit,
+    showNotification: (notyText: String, contentIntent: PendingIntent?) -> Unit,
     checkPermission: (
         launcher: ManagedActivityResultLauncher<String, Boolean>,
         noPermissionCase: () -> Unit,
@@ -83,7 +83,6 @@ fun ReminderDialog(
 
     val defaultTimeValue = FIFTEEN_MIN_IN_MILLIS
     var time by remember { mutableLongStateOf(defaultTimeValue) }
-    createLog("time = $time")
 
     val (selectedOption, onOptionSelected) = remember {
         mutableStateOf(radioOptions[0])
@@ -91,9 +90,7 @@ fun ReminderDialog(
 
     AlertDialog(onDismissRequest = {}) {
         Column(
-            modifier = Modifier
-//                .fillMaxSize()
-                .background(Color.LightGray),
+            modifier = Modifier.background(Color.LightGray),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
@@ -122,7 +119,6 @@ fun ReminderDialog(
                                         ONE_DAY -> time = ONE_DAY_IN_MILLIS
                                         SEVEN_DAYS -> time = SEVEN_DAYS_IN_MILLIS
                                     }
-                                    createLog("time = $time")
                                 },
                                 role = Role.RadioButton
                             )
@@ -131,7 +127,7 @@ fun ReminderDialog(
                     ) {
                         RadioButton(
                             selected = (text == selectedOption),
-                            onClick = null // null recommended for accessibility with screenreaders
+                            onClick = null
                         )
                         Text(
                             text = text,
@@ -166,15 +162,11 @@ fun ReminderDialog(
                             else -> throw Exception("Unknown time. Smth went wrong")
                         }
                         val notyText = "You  will be notified about $name in $requiredTime"
-//                        AlarmHelperImpl.createAlarm(context, time, characterName)
-//                        NotificationHelperImpl.showNotification(context, notyText)
-                        createAlarm.invoke(4000L, name)
-                        showNotification.invoke(notyText)
+                        createAlarm.invoke(2000L, name, itemId)
+                        showNotification.invoke(notyText, null)
                         openDialog.value = false
                     },
-                    modifier = Modifier
-//                    .align(Alignment.BottomStart)
-                        .padding(5.dp)
+                    modifier = Modifier.padding(5.dp)
                 ) {
                     Text(
                         text = "Confirm",
@@ -185,9 +177,7 @@ fun ReminderDialog(
 
                 Button(
                     onClick = { openDialog.value = false },
-                    modifier = Modifier
-//                    .align(Alignment.BottomEnd)
-                        .padding(5.dp)
+                    modifier = Modifier.padding(5.dp)
                 ) {
                     Text(
                         text = "Cancel",
@@ -198,10 +188,4 @@ fun ReminderDialog(
             }
         }
     }
-}
-
-@Composable
-@Preview(showSystemUi = true)
-fun ReminderDialogPreview() {
-//    ReminderDialog()
 }

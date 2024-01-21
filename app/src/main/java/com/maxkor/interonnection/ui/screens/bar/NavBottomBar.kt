@@ -31,7 +31,6 @@ fun MyBottomBar(navHelper: NavigationHelper) {
     ) {
         val navBackStackEntry by navHelper.navHostController
             .currentBackStackEntryAsState()
-//        val currentRoute = navBackStackEntry?.destination?.route
 
         icons.forEach() { item ->
             val currentRoute = item.screen.route
@@ -39,7 +38,6 @@ fun MyBottomBar(navHelper: NavigationHelper) {
                 it.route == currentRoute
             } ?: false
             NavigationBarItem(
-//                selected = currentRoute == route,
                 selected = isSelected,
                 onClick = {
                     if (!isSelected) {

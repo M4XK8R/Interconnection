@@ -4,8 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import com.maxkor.interonnection.domain.helpers.ImageShareHelper
-import dagger.hilt.android.qualifiers.ActivityContext
-import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class ImageShareHelperImpl @Inject constructor() : ImageShareHelper {

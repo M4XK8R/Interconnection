@@ -1,5 +1,6 @@
 package com.maxkor.interonnection.ui.screens.detail
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,15 +28,18 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
-import com.maxkor.interonnection.helpers.PicturesSaverImpl
+import com.maxkor.interonnection.navigation.NavigationHelper
 
 @Composable
 fun DetailScreen(
     dataModelId: String,
+    navigationHelper: NavigationHelper,
     viewModel: DetailViewModel = hiltViewModel()
 ) {
     val openDialog = remember { mutableStateOf(false) }
+
     val dataModel = viewModel.currentElement.value
+
     viewModel.getElement(dataModelId.toInt())
 
     val context = LocalContext.current
@@ -125,22 +129,21 @@ fun DetailScreen(
     if (openDialog.value) {
         ReminderDialog(
             openDialog = openDialog,
+            itemId = dataModelId,
             name = dataModel.fullName,
-            createAlarm = { time, name ->
-                viewModel.createAlarm(time, name)
+            createAlarm = { time, name, id ->
+                viewModel.createAlarm(time, name, id)
             },
-            showNotification = { notyText ->
-                viewModel.showNotification(notyText, null)
+            showNotification = { message, intent ->
+                viewModel.showNotification(message, intent)
             },
             checkPermission = { launcher, noPermissionCase, defaultCase ->
                 viewModel.checkPermission(launcher, noPermissionCase, defaultCase)
             }
         )
     }
-}
 
-//@Composable
-//@Preview(showSystemUi = true)
-//fun DetailScreenPreview() {
-//    DetailScreen(DataModelTest.testModel)
-//}
+    BackHandler {
+        navigationHelper.navigateToList()
+    }
+}

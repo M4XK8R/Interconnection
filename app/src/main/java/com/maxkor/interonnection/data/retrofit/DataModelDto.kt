@@ -1,7 +1,6 @@
 package com.maxkor.interonnection.data.retrofit
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
 
 data class DataModelDto(
 

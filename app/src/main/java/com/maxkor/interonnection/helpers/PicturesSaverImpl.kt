@@ -84,11 +84,6 @@ class PicturesSaverImpl @Inject constructor() : PicturesSaver{
         }
     }
 
-    /*
-This method can be used to download an image from the internet using a url in Android. This use Android Download Manager to
-download the file and added it to the Gallery. Downloaded image will be saved to "Pictures"
-Folder in your internal storage
-*/
    override fun saveImageToPicturesFolder(
         context: Context,
         downloadUrlOfImage: String,
@@ -101,7 +96,7 @@ Folder in your internal storage
             request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
                 .setAllowedOverRoaming(false)
                 .setTitle(filename)
-                .setMimeType("image/jpeg") // Your file type. You can use this code to download other file types also.
+                .setMimeType("image/jpeg")
                 .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
                 .setDestinationInExternalPublicDir(
                     Environment.DIRECTORY_PICTURES,

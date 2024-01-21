@@ -56,8 +56,6 @@ fun DataCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-//            .height(88.dp)
-//            .background(Color.LightGray)
             .padding(start = 3.dp, end = 3.dp, top = 3.dp, bottom = 3.dp)
             .then(modifier)
     ) {
@@ -65,20 +63,14 @@ fun DataCard(
             Modifier
                 .fillMaxSize()
                 .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 12.dp)
-//                .background(Color.Red)
         ) {
             Row(
-                modifier = Modifier
-                    .fillMaxSize()
-//                    .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 12.dp)
-//                    .background(Color.Green),
-                ,
+                modifier = Modifier.fillMaxSize(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-
                 AsyncImage(
                     model = dataModel.imageUrl,
-                    contentDescription = "Actor",
+                    contentDescription = null,
                     modifier = Modifier
                         .size(64.dp)
                         .clip(RoundedCornerShape(8.dp)),
@@ -87,12 +79,7 @@ fun DataCard(
                 Spacer(modifier = Modifier.size(16.dp))
 
                 Column(
-                    Modifier
-//                        .height(64.dp),
-                        .fillMaxHeight()
-//                    .width(250.dp)
-//                        .background(Color.LightGray),
-                    ,
+                    modifier = Modifier.fillMaxHeight(),
                     verticalArrangement = Arrangement.SpaceBetween
                 ) {
                     val price = dataModel.price.toDouble()
@@ -134,7 +121,7 @@ fun DataCard(
                                     TextField(
                                         value = textFieldState,
                                         onValueChange = { textFieldState = it },
-                                        modifier = Modifier.width(170.dp),
+                                        modifier = Modifier.width(150.dp),
                                         textStyle = MaterialTheme.typography.bodySmall,
                                         placeholder = {
                                             Text(

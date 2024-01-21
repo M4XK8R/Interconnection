@@ -22,11 +22,13 @@ class NavigationHelper(
 
     fun navigateToDetail(dataModelId: String) {
         navHostController.navigate(Screen.Detail.getRouteWithArgs(dataModelId)) {
-//            popUpTo(navHostController.graph.findStartDestination().id) {
-//                saveState = true
-//            }
-//            launchSingleTop = true
-//            restoreState = true
+        }
+    }
+
+    fun navigateToList() {
+        navHostController.navigate(Screen.List.route) {
+            popUpTo(Screen.List.route)
+            launchSingleTop = true
         }
     }
 

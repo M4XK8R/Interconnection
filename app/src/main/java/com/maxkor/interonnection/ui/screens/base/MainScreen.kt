@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.maxkor.interonnection.navigation.MainNavGraph
@@ -15,11 +16,16 @@ import com.maxkor.interonnection.ui.screens.list.ListScreen
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
+fun MainScreen(
+    itemId: String,
+    viewModel: MainViewModel = hiltViewModel()
+) {
 
     val navHelper = NavigationHelper.rememberNavigationState()
 
     val snackbarHostState = remember { viewModel.snackbarHostState }
+
+    val itemIdState = remember { mutableStateOf(itemId) }
 
     Scaffold(
         bottomBar = { MyBottomBar(navHelper) },
@@ -27,9 +33,12 @@ fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
     ) {
         MainNavGraph(
             navHostController = navHelper.navHostController,
-            listScreenContent = { ListScreen(navHelper) },
+            listScreenContent = { ListScreen(navHelper, itemIdState) },
             detailScreenContent = { dataModelId ->
-                DetailScreen(dataModelId)
+                DetailScreen(
+                    dataModelId = dataModelId,
+                    navigationHelper = navHelper
+                )
             },
             favoriteScreenContent = { FavoriteScreen() }
         )

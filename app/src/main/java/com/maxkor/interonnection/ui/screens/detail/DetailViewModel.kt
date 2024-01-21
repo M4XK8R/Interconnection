@@ -7,15 +7,11 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.maxkor.interonnection.createLog
 import com.maxkor.interonnection.domain.models.DataModel
-import com.maxkor.interonnection.domain.usecases.AddDescriptionUseCase
-import com.maxkor.interonnection.domain.usecases.AddToFavoritesUseCase
 import com.maxkor.interonnection.domain.usecases.CheckPermissionUseCase
 import com.maxkor.interonnection.domain.usecases.CreateAlarmUseCase
 import com.maxkor.interonnection.domain.usecases.GetElementUseCase
 import com.maxkor.interonnection.domain.usecases.ImageShareUseCase
-import com.maxkor.interonnection.domain.usecases.RemoveFromFavoritesUseCase
 import com.maxkor.interonnection.domain.usecases.SavePictureUseCase
 import com.maxkor.interonnection.domain.usecases.ShowNotificationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,9 +21,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    private val addToFavoritesUseCase: AddToFavoritesUseCase,
-    private val removeFromFavoritesUseCase: RemoveFromFavoritesUseCase,
-    private val addDescriptionUseCase: AddDescriptionUseCase,
     private val getElementUseCase: GetElementUseCase,
     private val createAlarmUseCase: CreateAlarmUseCase,
     private val showNotificationUseCase: ShowNotificationUseCase,
@@ -38,11 +31,6 @@ class DetailViewModel @Inject constructor(
 
     private val _currentElement = mutableStateOf(DataModel.initial)
     val currentElement: State<DataModel> = _currentElement
-
-    override fun onCleared() {
-        createLog("DetailViewModel onCleared")
-        super.onCleared()
-    }
 
     fun saveImage(
         context: Context,
@@ -69,26 +57,8 @@ class DetailViewModel @Inject constructor(
     }
 
 
-    fun createAlarm(time: Long, extraText: String) {
-        createAlarmUseCase(time, extraText)
-    }
-
-    fun addToFavorites(dataModel: DataModel) {
-        viewModelScope.launch(Dispatchers.IO) {
-            addToFavoritesUseCase(dataModel)
-        }
-    }
-
-    fun removeFromFavorites(dataModel: DataModel) {
-        viewModelScope.launch(Dispatchers.IO) {
-            removeFromFavoritesUseCase(dataModel)
-        }
-    }
-
-    fun addDescription(dataModel: DataModel, text: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            addDescriptionUseCase(dataModel, text)
-        }
+    fun createAlarm(time: Long, extraText: String, itemId: String) {
+        createAlarmUseCase(time, extraText, itemId)
     }
 
     fun getElement(dataModelId: Int) {

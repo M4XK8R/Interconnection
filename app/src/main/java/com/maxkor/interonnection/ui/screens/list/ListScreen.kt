@@ -13,6 +13,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -20,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.maxkor.interonnection.broadcast.NotyReceiver
 import com.maxkor.interonnection.navigation.NavigationHelper
 import com.maxkor.interonnection.ui.screens.composables.DataCard
 
@@ -28,8 +30,14 @@ import com.maxkor.interonnection.ui.screens.composables.DataCard
 @Composable
 fun ListScreen(
     navHelper: NavigationHelper,
+    itemIdState: MutableState<String>,
     viewModel: ListViewModel = hiltViewModel()
 ) {
+    if (itemIdState.value.toInt() != NotyReceiver.ID_DEFAULT_VALUE.toInt()) {
+        navHelper.navigateToDetail(itemIdState.value)
+        itemIdState.value = NotyReceiver.ID_DEFAULT_VALUE
+    }
+
     var searchedText by remember { viewModel.searchedText }
 
     val dataList = viewModel.dataListReactive.collectAsState(

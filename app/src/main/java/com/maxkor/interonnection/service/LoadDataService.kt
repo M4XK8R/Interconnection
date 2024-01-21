@@ -4,7 +4,6 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.IBinder
-import com.maxkor.interonnection.createLog
 import com.maxkor.interonnection.domain.usecases.CheckInternetUseCase
 import com.maxkor.interonnection.domain.usecases.LoadDataFromServerToDbUseCase
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,17 +28,11 @@ class LoadDataService : Service() {
     private val coroutineScopeIO = CoroutineScope(Dispatchers.IO)
     private var shouldLoadData = true
 
-    override fun onCreate() {
-        super.onCreate()
-        createLog("LoadDataService onCreate")
-    }
-
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         CoroutineScope(Dispatchers.IO).launch {
             while (shouldLoadData) {
-                createLog("Service loading data")
                 val hasInternetConnection = checkInternetUseCase()
                 loadDataFromServerToDbUseCase(hasInternetConnection)
                 delay(DOWNTIME)

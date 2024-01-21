@@ -9,7 +9,14 @@ data class DataModel(
     var isFavorite: Boolean
 ) {
     companion object {
-        val initial = DataModel(0, "", "", "","", false)
+        val initial = DataModel(
+            0,
+            "",
+            "",
+            "",
+            "",
+            false
+        )
 
         const val DEFAULT_EXTRA_TEXT = ""
     }
