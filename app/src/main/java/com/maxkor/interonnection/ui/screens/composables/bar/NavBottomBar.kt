@@ -1,4 +1,4 @@
-package com.maxkor.interonnection.ui.screens.bar
+package com.maxkor.interonnection.ui.screens.composables.bar
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon

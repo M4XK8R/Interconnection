@@ -15,7 +15,7 @@ import java.io.FileOutputStream
 import java.net.URL
 import javax.inject.Inject
 
-class PicturesSaverImpl @Inject constructor() : PicturesSaver{
+class PicturesSaverImpl @Inject constructor() : PicturesSaver {
 
     // Does not work properly
     fun saveImageToGallery(
@@ -62,29 +62,30 @@ class PicturesSaverImpl @Inject constructor() : PicturesSaver{
         }
     }
 
-    fun saveImageToDownloadsFolder(
+    override fun saveImageToDownloadsFolder(
         context: Context,
         imageUrl: String,
         fileName: String,
     ) {
-        try {
-            val downloadManager =
-                context.getSystemService(Context.DOWNLOAD_SERVICE) as? DownloadManager
-            val uri = Uri.parse(imageUrl)
-            val downloadRequest = DownloadManager.Request(uri).setDestinationInExternalPublicDir(
-                Environment.DIRECTORY_DOWNLOADS,
-                fileName
-            )
-            downloadManager?.enqueue(downloadRequest)
-            Toast.makeText(context, "Done", Toast.LENGTH_SHORT).show()
+            try {
+                val downloadManager =
+                    context.getSystemService(Context.DOWNLOAD_SERVICE) as? DownloadManager
+                val uri = Uri.parse(imageUrl)
+                val downloadRequest =
+                    DownloadManager.Request(uri).setDestinationInExternalPublicDir(
+                        Environment.DIRECTORY_DOWNLOADS,
+                        fileName
+                    )
+                downloadManager?.enqueue(downloadRequest)
+                Toast.makeText(context, "Done", Toast.LENGTH_SHORT).show()
 
-        } catch (e: Exception) {
-            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
-            e.printStackTrace()
-        }
+            } catch (e: Exception) {
+                Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
+                e.printStackTrace()
+            }
     }
 
-   override fun saveImageToPicturesFolder(
+    override fun saveImageToPicturesFolder(
         context: Context,
         downloadUrlOfImage: String,
         filename: String

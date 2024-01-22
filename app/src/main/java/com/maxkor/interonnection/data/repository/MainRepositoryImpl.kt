@@ -1,5 +1,6 @@
 package com.maxkor.interonnection.data.repository
 
+import androidx.compose.runtime.mutableStateOf
 import com.maxkor.interonnection.createLog
 import com.maxkor.interonnection.data.db.DataEntity
 import com.maxkor.interonnection.data.db.InternalDataBase
@@ -16,6 +17,8 @@ class MainRepositoryImpl @Inject constructor(
     private val api: ApiService,
     private val mapper: PojoMapper
 ) : MainRepository {
+
+    override val errorMsg = mutableStateOf("")
 
     override fun getDataReactive(): Flow<List<DataModel>> {
         return db.getMainDao().getDataReactive().map { entityList ->
@@ -35,17 +38,15 @@ class MainRepositoryImpl @Inject constructor(
 
     override suspend fun loadDataFromServerToDb(hasInternetConnection: Boolean) {
         if (hasInternetConnection) {
-            createLog(" hasInternetConnection loadDataFromServerToDb")
             try {
                 val newData = mutableListOf<DataEntity>()
                 val response = api.getResponse()
-                createLog("response = ${response.body()}")
+                errorMsg.value = response.body()?.status ?: STATUS_NOT_RECEIVED
                 if (response.isSuccessful) {
                     response.body()?.data?.coins?.forEach { dto ->
                         newData.add(mapper.dtoToEntity(dto))
                     }
                     val oldData = db.getMainDao().getAll()
-                    // TODO get first 50
                     if (oldData.isNotEmpty()) {
                         if (newData.size != oldData.size) throw Exception(
                             "MainRepositoryImpl: the size of lists is different. Something went wrong"
@@ -58,19 +59,18 @@ class MainRepositoryImpl @Inject constructor(
                     }
                     db.getMainDao().insertAllData(newData)
                 } else {
-                    //TODO
+                    errorMsg.value = REQUEST_IS_NOT_SUCCESSFUL
                     response.errorBody()?.let { createLog(it.string()) }
                 }
             } catch (e: Exception) {
+                errorMsg.value = REQUEST_FAILED
                 e.printStackTrace()
                 e.localizedMessage?.let {
                     createLog("loadDataFromServerToDb exception = $it")
                 }
             }
+        } else {
+            errorMsg.value = "NO INTERNET CONNECTION"
         }
-    }
-
-    override suspend fun getErrors() {
-        //TODO
     }
 }

@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.maxkor.interonnection.broadcast.NotyReceiver
 import com.maxkor.interonnection.navigation.NavigationHelper
-import com.maxkor.interonnection.ui.screens.composables.DataCard
+import com.maxkor.interonnection.ui.screens.composables.card.DataCard
 
 @SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalMaterial3Api::class)

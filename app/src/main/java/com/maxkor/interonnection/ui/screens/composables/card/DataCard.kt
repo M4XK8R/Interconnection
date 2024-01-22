@@ -1,4 +1,4 @@
-package com.maxkor.interonnection.ui.screens.composables
+package com.maxkor.interonnection.ui.screens.composables.card
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.requiredWidthIn
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -49,9 +50,12 @@ fun DataCard(
     removeFromFavorites: (DataModel) -> Unit,
     addDescription: (DataModel, String) -> Unit,
     modifier: Modifier = Modifier,
+    dataCardState: DataCardState = DataCardState.List,
 ) {
+    val cardModeState = remember { mutableStateOf(CardMode.defaultMode) }
+    val cardState = remember { mutableStateOf(dataCardState) }
     var textFieldState by remember { mutableStateOf(dataModel.extraText) }
-    val modeState = remember { mutableStateOf(CardState.defaultMode) }
+    var openDialog by remember { mutableStateOf(false) }
 
     Card(
         modifier = Modifier
@@ -97,26 +101,26 @@ fun DataCard(
                     )
 
                     if (dataModel.isFavorite) {
-                        when (modeState.value) {
-                            CardState.ModeRead -> {
+                        when (cardModeState.value) {
+                            CardMode.Read -> {
                                 if (textFieldState.isNotEmpty()) {
                                     FavoriteModeText(
                                         text = textFieldState,
                                         changeCardMode = {
-                                            modeState.value = CardState.ModeEdit
+                                            cardModeState.value = CardMode.Edit
                                         }
                                     )
                                 } else {
                                     FavoriteModeText(
                                         text = "Add description",
                                         changeCardMode = {
-                                            modeState.value = CardState.ModeEdit
+                                            cardModeState.value = CardMode.Edit
                                         }
                                     )
                                 }
                             }
 
-                            CardState.ModeEdit -> {
+                            CardMode.Edit -> {
                                 Row {
                                     TextField(
                                         value = textFieldState,
@@ -139,7 +143,7 @@ fun DataCard(
                                     IconButton(
                                         onClick = {
                                             addDescription.invoke(dataModel, textFieldState)
-                                            modeState.value = CardState.ModeRead
+                                            cardModeState.value = CardMode.Read
                                         }
                                     ) {
                                         Image(
@@ -162,11 +166,46 @@ fun DataCard(
                         dataModel = dataModel,
                         painterResourceId = R.drawable.iv_picked,
                         changeFavoriteState = { dataModel ->
-                            removeFromFavorites.invoke(dataModel)
-                            textFieldState = DataModel.DEFAULT_EXTRA_TEXT
+                            if (cardState.value == DataCardState.List) {
+                                removeFromFavorites.invoke(dataModel)
+                                textFieldState = DataModel.DEFAULT_EXTRA_TEXT
+                            }
+                            if (cardState.value == DataCardState.Favorites) {
+                                openDialog = true
+                            }
                         }
                     )
                 }
+
+                if (openDialog) {
+                    AlertDialog(
+                        onDismissRequest = { openDialog = false },
+                        confirmButton = {
+                            Row(modifier.clickable {
+                                removeFromFavorites.invoke(dataModel)
+                                textFieldState = DataModel.DEFAULT_EXTRA_TEXT
+                            }) {
+                                Text(
+                                    text = "OK",
+                                    fontSize = TextUnit(18f, TextUnitType.Sp),
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    style = MaterialTheme.typography.titleLarge,
+                                    fontFamily = FontFamily.SansSerif,
+                                )
+                            }
+                        },
+                        text = {
+                            Text(
+                                text = "Remove from favorites?",
+                                fontSize = TextUnit(18f, TextUnitType.Sp),
+                                color = MaterialTheme.colorScheme.onSurface,
+                                style = MaterialTheme.typography.titleLarge,
+                                fontFamily = FontFamily.SansSerif,
+                            )
+                        }
+                    )
+                }
+
                 if (!dataModel.isFavorite) {
                     FavoriteImage(
                         dataModel = dataModel,
@@ -216,11 +255,11 @@ private fun FavoriteModeText(
     )
 }
 
-private sealed class CardState() {
-    data object ModeRead : CardState()
-    data object ModeEdit : CardState()
+private sealed class CardMode() {
+    data object Read : CardMode()
+    data object Edit : CardMode()
 
     companion object {
-        val defaultMode: CardState = ModeRead
+        val defaultMode: CardMode = Read
     }
 }

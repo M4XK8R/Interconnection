@@ -9,7 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.maxkor.interonnection.navigation.MainNavGraph
 import com.maxkor.interonnection.navigation.NavigationHelper
-import com.maxkor.interonnection.ui.screens.bar.MyBottomBar
+import com.maxkor.interonnection.ui.screens.composables.bar.MyBottomBar
 import com.maxkor.interonnection.ui.screens.detail.DetailScreen
 import com.maxkor.interonnection.ui.screens.favorite.FavoriteScreen
 import com.maxkor.interonnection.ui.screens.list.ListScreen
@@ -20,11 +20,9 @@ fun MainScreen(
     itemId: String,
     viewModel: MainViewModel = hiltViewModel()
 ) {
-
     val navHelper = NavigationHelper.rememberNavigationState()
 
     val snackbarHostState = remember { viewModel.snackbarHostState }
-
     val itemIdState = remember { mutableStateOf(itemId) }
 
     Scaffold(

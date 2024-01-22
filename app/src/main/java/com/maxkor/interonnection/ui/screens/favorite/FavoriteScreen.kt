@@ -8,7 +8,8 @@ import androidx.compose.material3.rememberDismissState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.maxkor.interonnection.ui.screens.composables.DataCard
+import com.maxkor.interonnection.ui.screens.composables.card.DataCard
+import com.maxkor.interonnection.ui.screens.composables.card.DataCardState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,7 +35,8 @@ fun FavoriteScreen(
                         removeFromFavorites = { viewModel.removeFromFavorites(it) },
                         addDescription = { dataModel, text ->
                             viewModel.addDescription(dataModel, text)
-                        }
+                        },
+                        dataCardState = DataCardState.Favorites
                     )
                 }
             )

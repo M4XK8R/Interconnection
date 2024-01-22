@@ -24,10 +24,11 @@ class NotificationHelperImpl @Inject constructor(
         ) as NotificationManager
 
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(R.drawable.iv_picked)
+            .setSmallIcon(R.drawable.baseline_circle_notifications_24)
             .setContentText(contentText)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(contentIntent)
+            .setAutoCancel(true)
             .build()
 
         val channel = NotificationChannel(

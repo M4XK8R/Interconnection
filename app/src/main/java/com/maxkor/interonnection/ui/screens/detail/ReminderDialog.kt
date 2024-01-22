@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -30,6 +31,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.Role
@@ -88,7 +90,10 @@ fun ReminderDialog(
         mutableStateOf(radioOptions[0])
     }
 
-    AlertDialog(onDismissRequest = {}) {
+    AlertDialog(
+        onDismissRequest = {},
+        modifier = Modifier.clip(RoundedCornerShape(24.dp))
+    ) {
         Column(
             modifier = Modifier.background(Color.LightGray),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -97,7 +102,7 @@ fun ReminderDialog(
                 text = "Choose time",
                 modifier = Modifier.padding(top = 16.dp),
                 fontSize = TextUnit(20f, TextUnitType.Sp),
-                color = MaterialTheme.colorScheme.onSurface,
+                color = Color.Blue,
                 style = MaterialTheme.typography.headlineMedium,
             )
 
@@ -131,7 +136,9 @@ fun ReminderDialog(
                         )
                         Text(
                             text = text,
-                            style = MaterialTheme.typography.bodyLarge,
+                            color = Color.Blue,
+                            fontSize = TextUnit(18f, TextUnitType.Sp),
+                            style = MaterialTheme.typography.displayLarge,
                             modifier = Modifier.padding(start = 16.dp)
                         )
                     }
@@ -162,26 +169,26 @@ fun ReminderDialog(
                             else -> throw Exception("Unknown time. Smth went wrong")
                         }
                         val notyText = "You  will be notified about $name in $requiredTime"
-                        createAlarm.invoke(2000L, name, itemId)
+                        createAlarm.invoke(time, name, itemId)
                         showNotification.invoke(notyText, null)
                         openDialog.value = false
                     },
-                    modifier = Modifier.padding(5.dp)
+                    modifier = Modifier.padding(12.dp)
                 ) {
                     Text(
                         text = "Confirm",
-                        fontSize = TextUnit(14f, TextUnitType.Sp),
+                        fontSize = TextUnit(12f, TextUnitType.Sp),
                         color = MaterialTheme.colorScheme.background,
                     )
                 }
 
                 Button(
                     onClick = { openDialog.value = false },
-                    modifier = Modifier.padding(5.dp)
+                    modifier = Modifier.padding(12.dp)
                 ) {
                     Text(
                         text = "Cancel",
-                        fontSize = TextUnit(14f, TextUnitType.Sp),
+                        fontSize = TextUnit(12f, TextUnitType.Sp),
                         color = MaterialTheme.colorScheme.background,
                     )
                 }
