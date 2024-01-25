@@ -39,25 +39,30 @@ class MainRepositoryImpl @Inject constructor(
     override suspend fun loadDataFromServerToDb(hasInternetConnection: Boolean) {
         if (hasInternetConnection) {
             try {
-                val newData = mutableListOf<DataEntity>()
                 val response = api.getResponse()
                 errorMsg.value = response.body()?.status ?: STATUS_NOT_RECEIVED
+
                 if (response.isSuccessful) {
+                    val newData = mutableListOf<DataEntity>()
                     response.body()?.data?.coins?.forEach { dto ->
                         newData.add(mapper.dtoToEntity(dto))
                     }
+
                     val oldData = db.getMainDao().getAll()
+
                     if (oldData.isNotEmpty()) {
                         if (newData.size != oldData.size) throw Exception(
                             "MainRepositoryImpl: the size of lists is different. Something went wrong"
                         )
                         for (index in oldData.indices) {
                             if (oldData[index].isFavorite) {
-                                newData[index] = oldData[index]
+                                newData[index].isFavorite = oldData[index].isFavorite
                             }
                         }
                     }
+
                     db.getMainDao().insertAllData(newData)
+
                 } else {
                     errorMsg.value = REQUEST_IS_NOT_SUCCESSFUL
                     response.errorBody()?.let { createLog(it.string()) }
