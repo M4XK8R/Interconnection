@@ -8,6 +8,7 @@ import androidx.compose.material3.rememberDismissState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.maxkor.interonnection.ui.screens.composables.SwipeToDelete
 import com.maxkor.interonnection.ui.screens.composables.card.DataCard
 import com.maxkor.interonnection.ui.screens.composables.card.DataCardState
 

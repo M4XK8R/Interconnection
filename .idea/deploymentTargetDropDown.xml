@@ -2,7 +2,26 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="app">
+      <entry key="DefaultPreview">
+        <State />
+      </entry>
+      <entry key="RunPreview">
+        <State>
+          <targetSelectedWithDropDown>
+            <Target>
+              <type value="QUICK_BOOT_TARGET" />
+              <deviceKey>
+                <Key>
+                  <type value="VIRTUAL_DEVICE_PATH" />
+                  <value value="D:\android\AVD\Medium_Phone_API_34_14_.avd" />
+                </Key>
+              </deviceKey>
+            </Target>
+          </targetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-01-26T04:40:13.128781700Z" />
+        </State>
+      </entry>
+      <entry key="TimePickerDialogPreview">
         <State>
           <targetSelectedWithDropDown>
             <Target>
@@ -15,7 +34,42 @@
               </deviceKey>
             </Target>
           </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-01-22T07:03:21.053063200Z" />
+          <timeTargetWasSelectedWithDropDown value="2024-01-25T13:54:54.235262500Z" />
+        </State>
+      </entry>
+      <entry key="TimePickerSwitchPreview">
+        <State>
+          <targetSelectedWithDropDown>
+            <Target>
+              <type value="QUICK_BOOT_TARGET" />
+              <deviceKey>
+                <Key>
+                  <type value="VIRTUAL_DEVICE_PATH" />
+                  <value value="D:\android\AVD\Medium_Phone_API_34_14_.avd" />
+                </Key>
+              </deviceKey>
+            </Target>
+          </targetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-01-25T14:29:00.710815700Z" />
+        </State>
+      </entry>
+      <entry key="TimePickerSwitchPreview - Light Mode">
+        <State />
+      </entry>
+      <entry key="app">
+        <State>
+          <targetSelectedWithDropDown>
+            <Target>
+              <type value="QUICK_BOOT_TARGET" />
+              <deviceKey>
+                <Key>
+                  <type value="VIRTUAL_DEVICE_PATH" />
+                  <value value="D:\android\AVD\Medium_Phone_API_34_14_.avd" />
+                </Key>
+              </deviceKey>
+            </Target>
+          </targetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-01-25T15:08:28.460591900Z" />
         </State>
       </entry>
     </value>

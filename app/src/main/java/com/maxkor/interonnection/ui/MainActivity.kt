@@ -1,4 +1,4 @@
-package com.maxkor.interonnection
+package com.maxkor.interonnection.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

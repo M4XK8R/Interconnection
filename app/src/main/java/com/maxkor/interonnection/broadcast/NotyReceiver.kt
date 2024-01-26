@@ -6,7 +6,7 @@ import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.maxkor.interonnection.MainActivity
+import com.maxkor.interonnection.ui.MainActivity
 import com.maxkor.interonnection.domain.usecases.ShowNotificationUseCase
 import com.maxkor.interonnection.helpers.AlarmHelperImpl
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,7 +24,6 @@ class NotyReceiver : BroadcastReceiver() {
         const val ACTION_SHOW_REQUIRED_SCREEN = "show_detail_screen"
         const val ID_PARAM = "data_model_id"
         const val ID_DEFAULT_VALUE = "-1"
-
     }
 
     override fun onReceive(context: Context, intent: Intent) {

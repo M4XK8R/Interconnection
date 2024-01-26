@@ -1,4 +1,4 @@
-package com.maxkor.interonnection.ui.screens.favorite
+package com.maxkor.interonnection.ui.screens.composables
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize

@@ -6,7 +6,9 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.maxkor.interonnection.broadcast.NotyReceiver
 import com.maxkor.interonnection.navigation.MainNavGraph
 import com.maxkor.interonnection.navigation.NavigationHelper
 import com.maxkor.interonnection.ui.screens.composables.bar.MyBottomBar
@@ -41,4 +43,10 @@ fun MainScreen(
             favoriteScreenContent = { FavoriteScreen() }
         )
     }
+}
+
+@Composable
+@Preview(showSystemUi = true)
+fun MainPreview() {
+    MainScreen(NotyReceiver.ID_DEFAULT_VALUE)
 }
